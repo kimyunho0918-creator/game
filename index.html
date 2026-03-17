@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>학교 건물 강화하기 (Premium Edition)</title>
+    <title>학교 건물 강화하기 (Ultimate Dark Edition)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
         
-        /* 다이나믹 애니메이션 배경 */
+        /* 1. 다이나믹 애니메이션 배경 & 폰트 */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -17,259 +17,244 @@
         body {
             font-family: 'Orbit', sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #121212);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
+            background: linear-gradient(-45deg, #090a0f, #1b2735, #223447, #0d131a);
+            background-size: 400% 400%; animation: gradientBG 20s ease infinite;
             color: #ecf0f1; font-weight: 600; overflow: hidden;
         }
         
-        /* 프리미엄 글래스모피즘 패널 */
+        /* 2. 레이아웃 최적화 (비율 7:3 조정 및 사이즈 반응형 처리) */
+        #app-container { 
+            display: flex; gap: 30px; width: 96%; max-width: 1400px; height: 92vh; 
+        }
+        
+        /* 프리미엄 다크 글래스모피즘 공통 */
         .glass-panel {
-            background: rgba(15, 20, 25, 0.75);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            background: rgba(20, 25, 30, 0.65);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-right: 1px solid rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
-        #app-container { display: flex; gap: 25px; width: 95%; max-width: 1300px; height: 92vh; }
-        
+        /* 메인 게임 컨테이너 (70%) */
         #game-container {
-            flex-grow: 1; padding: 40px; box-sizing: border-box; position: relative;
+            flex: 1 1 70%; padding: 40px; box-sizing: border-box; position: relative;
             display: flex; flex-direction: column; overflow: hidden;
         }
         
+        /* 명예의 전당 컨테이너 (30%) */
         #leaderboard-container {
-            width: 340px; flex-shrink: 0; padding: 30px; display: flex; flex-direction: column;
+            flex: 1 1 30%; min-width: 380px; padding: 35px; display: flex; flex-direction: column;
         }
         
-        /* 명예의 전당 타이틀 및 리스트 */
+        /* 3. 명예의 전당 디테일 & 삭제 버튼 UI */
         #leaderboard-container h2 {
-            text-align: center; margin-top: 0; color: #f1c40f; font-size: 28px;
-            padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.1);
-            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+            text-align: center; margin-top: 0; color: #f1c40f; font-size: 32px;
+            padding-bottom: 20px; border-bottom: 2px dashed rgba(255,255,255,0.1);
+            text-shadow: 0 0 15px rgba(241, 196, 15, 0.4); letter-spacing: 2px;
         }
         
         #leaderboard-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 10px; }
-        #leaderboard-list li {
-            display: flex; justify-content: space-between; padding: 18px 15px;
-            border-radius: 16px; margin-bottom: 12px;
-            background: rgba(30, 35, 40, 0.8);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.4); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid rgba(255,255,255,0.05);
+        .leaderboard-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 20px;
+            border-radius: 20px; margin-bottom: 15px; position: relative;
+            background: rgba(30, 35, 45, 0.8);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
         }
-        #leaderboard-list li:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.6); border-color: #00d2d3; }
-        #leaderboard-list li .rank { font-weight: 900; color: #ff9f43; width: 50px; font-size: 16px; }
-        #leaderboard-list li .name { font-weight: bold; flex-grow: 1; color: #c8d6e5; font-size: 16px; }
-        #leaderboard-list li .score { text-align: right; color: #8395a7; font-size: 13px; line-height: 1.4; }
-
-        /* 타이틀 효과 (네온 글로우) */
-        .game-title {
-            font-size: 52px; text-align: center; margin: 0; font-weight: 900;
-            background: linear-gradient(to right, #00d2d3, #54a0ff, #5f27cd);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 210, 211, 0.4); letter-spacing: -1px;
+        .leaderboard-item:hover { 
+            transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.7); 
+            border-color: #00d2d3; background: rgba(40, 48, 60, 0.9);
         }
         
-        /* 공통 원형 버튼 (다크 메탈 느낌) */
-        .circular-btn {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: linear-gradient(145deg, #2b2f36, #1e2227);
-            box-shadow: 6px 6px 12px rgba(0,0,0,0.5), -6px -6px 12px rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 30px; display: flex; justify-content: center; align-items: center; user-select: none;
-            color: #ecf0f1; position: relative;
+        .lb-left { display: flex; align-items: center; gap: 15px; }
+        .lb-rank { font-weight: 900; color: #ff9f43; font-size: 20px; min-width: 45px; }
+        .lb-user-info { display: flex; flex-direction: column; gap: 3px; }
+        .lb-id { font-size: 13px; color: #00d2d3; letter-spacing: 1px; }
+        .lb-name { font-size: 18px; color: #ecf0f1; font-weight: bold; }
+        
+        .lb-right { text-align: right; display: flex; flex-direction: column; gap: 3px; transition: 0.3s; }
+        .lb-level { font-size: 18px; color: #f1c40f; font-weight: 900; }
+        .lb-budget { font-size: 14px; color: #8395a7; }
+        
+        /* 삭제 버튼 로직 (호버 시 나타남) */
+        .delete-score-btn {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%) scale(0.8);
+            background: #ff4757; border: none; width: 40px; height: 40px; border-radius: 50%;
+            color: white; font-size: 18px; cursor: pointer; opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.5); display: flex; justify-content: center; align-items: center;
         }
-        .circular-btn:hover { transform: scale(1.15) translateY(-5px); box-shadow: 0 0 20px rgba(0, 210, 211, 0.6); border-color: #00d2d3; }
-        .circular-btn:active { transform: scale(0.9); box-shadow: inset 5px 5px 10px rgba(0,0,0,0.5); }
+        .leaderboard-item:hover .delete-score-btn { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
+        .leaderboard-item:hover .lb-right { opacity: 0; transform: translateX(20px); }
+        .delete-score-btn:hover { background: #ff6b81; transform: translateY(-50%) scale(1.15) !important; }
 
+        /* 타이틀 네온 이펙트 */
+        .game-title {
+            font-size: 58px; text-align: center; margin: 0; font-weight: 900;
+            background: linear-gradient(to right, #00d2d3, #54a0ff, #5f27cd);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(0, 210, 211, 0.3); letter-spacing: -1px;
+        }
+
+        /* 입력 그룹 최적화 (학번 + 이름) */
+        .input-group {
+            display: flex; gap: 15px; justify-content: center; margin: 45px 0 35px 0; width: 100%;
+        }
+        .styled-input {
+            padding: 20px 25px; font-size: 24px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.1);
+            text-align: center; font-family: 'Orbit', sans-serif;
+            background: rgba(0,0,0,0.6); color: #fff; box-shadow: inset 0 4px 15px rgba(0,0,0,0.8); 
+            transition: all 0.3s;
+        }
+        .styled-input:focus { border-color: #00d2d3; outline: none; box-shadow: 0 0 25px rgba(0, 210, 211, 0.4), inset 0 4px 12px rgba(0,0,0,0.9); transform: translateY(-3px); }
+        #player-id-input { width: 160px; color: #00d2d3; }
+        #player-name-input { width: 220px; }
+
+        /* 버튼 그룹 (시작 / 이어하기) */
+        .btn-group { display: flex; gap: 20px; justify-content: center; }
+
+        /* 뷰 전환 애니메이션 */
         .view { display: none; flex-direction: column; height: 100%; animation: fadeZoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .view.active { display: flex; }
-        @keyframes fadeZoomIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes fadeZoomIn { from { opacity: 0; transform: scale(0.97) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
         /* 헤더 / 푸터 */
         .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
         .header-item-group { display: flex; gap: 20px; }
-        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 15px; font-weight: bold; color: #a4b0be; gap: 8px; }
+        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 16px; font-weight: bold; color: #a4b0be; gap: 8px; }
         
         .main-content { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; position: relative; }
         
         /* 정보 패널 */
         .info-panel {
-            background: rgba(20, 25, 30, 0.85); padding: 25px; border-radius: 20px; width: 235px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); font-size: 18px; line-height: 1.7; z-index: 10;
+            background: rgba(15, 20, 25, 0.85); padding: 25px; border-radius: 20px; width: 250px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); font-size: 18px; line-height: 1.8; z-index: 10;
         }
-        .info-panel p { margin: 12px 0; font-size: 15px; color: #a4b0be; }
+        .info-panel p { margin: 12px 0; font-size: 15px; color: #8395a7; }
         .info-panel span, .info-panel div { font-weight: 900; color: #ecf0f1; display: block; }
-        #cost { min-height: 55px; color: #ff6b6b; font-size: 22px; margin-top: 5px; text-shadow: 0 0 10px rgba(255, 107, 107, 0.6); }
+        #cost { min-height: 55px; color: #ff6b6b; font-size: 24px; margin-top: 5px; text-shadow: 0 0 15px rgba(255, 107, 107, 0.5); }
 
-        /* 학교 이미지 디스플레이 영역 (애니메이션 극대화) */
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 20px rgba(0, 210, 211, 0.2), inset 0 0 20px rgba(0, 210, 211, 0.2); } 50% { box-shadow: 0 0 70px rgba(0, 210, 211, 0.7), inset 0 0 45px rgba(0, 210, 211, 0.5); } 100% { box-shadow: 0 0 20px rgba(0, 210, 211, 0.2), inset 0 0 20px rgba(0, 210, 211, 0.2); } }
+        /* 메인 게임 강화 버튼 & 원형 버튼 */
+        .circular-btn {
+            width: 75px; height: 75px; border-radius: 50%;
+            background: linear-gradient(145deg, #2b2f36, #1e2227);
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.6), -4px -4px 10px rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 32px; display: flex; justify-content: center; align-items: center; user-select: none; color: #ecf0f1;
+        }
+        .circular-btn:hover { transform: scale(1.15) translateY(-5px); box-shadow: 0 0 25px rgba(0, 210, 211, 0.5); border-color: #00d2d3; }
+        .circular-btn:active { transform: scale(0.9); }
+        
+        .action-panel .enhance-btn {
+            width: 220px; height: 220px; font-size: 110px;
+            background: linear-gradient(135deg, #2c3e50 0%, #050505 100%);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.1);
+            border: 5px solid #f39c12; z-index: 10;
+        }
+        .action-panel .enhance-btn:hover { border-color: #e74c3c; box-shadow: 0 0 60px rgba(231, 76, 60, 0.8); transform: scale(1.1) rotate(5deg); }
+
+        /* 학교 이미지 (플로팅 + 글로우) */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 30px rgba(0, 210, 211, 0.2), inset 0 0 20px rgba(0, 210, 211, 0.2); } 50% { box-shadow: 0 0 80px rgba(0, 210, 211, 0.6), inset 0 0 50px rgba(0, 210, 211, 0.4); } }
         
         .school-display-panel { text-align: center; display: flex; flex-direction: column; align-items: center; flex-grow: 1; z-index: 5; position: relative; }
         #image-container {
-            width: 370px; height: 370px; display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.7) 80%);
-            border-radius: 35px; border: 2px solid rgba(0, 210, 211, 0.5);
-            margin-bottom: 30px; 
-            animation: float 4s ease-in-out infinite, pulseGlow 3s infinite;
-            position: relative;
+            width: 380px; height: 380px; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.8) 80%);
+            border-radius: 40px; border: 2px solid rgba(0, 210, 211, 0.5);
+            margin-bottom: 30px; animation: float 4s ease-in-out infinite, pulseGlow 3s infinite;
         }
         .school-display-panel img { 
-            max-width: 88%; max-height: 88%; object-fit: contain; 
-            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.8));
+            max-width: 90%; max-height: 90%; object-fit: contain; 
+            filter: drop-shadow(0 25px 30px rgba(0,0,0,0.8));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
-        #image-container:hover img { transform: scale(1.18) rotate(2deg); filter: drop-shadow(0 30px 45px rgba(0, 210, 211, 0.6)); }
+        #image-container:hover img { transform: scale(1.2) rotate(3deg); filter: drop-shadow(0 35px 50px rgba(0, 210, 211, 0.5)); }
         
-        .school-level-name { font-size: 44px; margin-top: 0; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.7); }
-        .school-probability { font-size: 25px; color: #1dd1a1; background: rgba(29, 209, 161, 0.1); padding: 8px 25px; border-radius: 30px; margin-top: 15px; box-shadow: 0 0 15px rgba(29, 209, 161, 0.4); font-weight: bold; border: 2px solid #1dd1a1;}
-        
-        /* 강화 버튼 (네온 포인트) */
-        .action-panel .enhance-btn {
-            width: 210px; height: 210px; font-size: 110px;
-            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 25px rgba(255,255,255,0.1);
-            border: 4px solid #f39c12; z-index: 10; color: #fff;
-        }
-        .action-panel .enhance-btn:hover { border-color: #e74c3c; box-shadow: 0 0 50px rgba(231, 76, 60, 1); transform: scale(1.1) rotate(5deg); }
+        .school-level-name { font-size: 46px; margin-top: 0; font-weight: 900; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+        .school-probability { font-size: 26px; color: #1dd1a1; background: rgba(29, 209, 161, 0.1); padding: 10px 30px; border-radius: 30px; margin-top: 15px; box-shadow: 0 0 20px rgba(29, 209, 161, 0.3); font-weight: bold; border: 2px solid #1dd1a1;}
 
-        /* 강화 성공 이펙트 파티클 */
-        @keyframes successParticle {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-        }
-        .particle {
-            position: absolute; width: 10px; height: 10px; background: #00d2d3;
-            border-radius: 50%; opacity: 0; z-index: 6; pointer-events: none;
-            box-shadow: 0 0 10px #00d2d3;
-            --x: 0px; --y: 0px;
-        }
-
-        /* 그리드 아이템 (상점 & 인벤토리) */
-        .shop-grid, .inventory-grid {
-            flex-grow: 1; overflow-y: auto; padding: 20px 10px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; align-content: start;
-        }
-        
-        .shop-item, .relic-item {
-            background: rgba(30, 35, 40, 0.85); padding: 30px 25px; border-radius: 24px;
-            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden;
-        }
-        .shop-item::before, .relic-item::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); transition: 0.5s;
-        }
-        .shop-item:hover::before, .relic-item:hover::before { left: 200%; }
-        .shop-item:hover, .relic-item:hover { transform: translateY(-12px); box-shadow: 0 0 40px rgba(0, 210, 211, 0.4); border-color: #00d2d3;}
-        
-        .shop-item h3 { margin-top: 0; color: #fff; font-size: 24px; font-weight: 900;}
-        .shop-item .price { font-weight: 900; color: #ff9f43; font-size: 22px; margin: 20px 0; background: rgba(255, 159, 67, 0.1); padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 159, 67, 0.3);}
-        
-        .buy-btn, #pickup-item-btn {
-            padding: 16px 26px; border: none; border-radius: 18px; font-family: 'Orbit', sans-serif;
-            font-size: 22px; font-weight: 900; cursor: pointer; transition: all 0.2s;
-            background: linear-gradient(135deg, #10ac84, #1dd1a1); color: #222; 
-            box-shadow: 0 10px 25px rgba(16, 172, 132, 0.5);
-        }
-        .buy-btn:hover, #pickup-item-btn:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 0 30px rgba(29, 209, 161, 0.9); color:#fff; }
-        .buy-btn:active, #pickup-item-btn:active { transform: scale(0.95); }
-
-        .relic-item { font-size: 22px; line-height: 1.6; color: #ecf0f1; position: relative;}
-        .relic-item.normal { background: rgba(45, 52, 54, 0.85); border: 1px solid #636e72;}
-        .relic-item.special { background: rgba(30, 39, 46, 0.95); border: 2px solid #f1c40f; box-shadow: 0 0 25px rgba(241, 196, 15, 0.25); }
-        .relic-item.ticket { background: rgba(55, 0, 0, 0.7); color: #ff7675; border: 1px solid #ff7675;}
-        /* 유물 컬렉션 마스터리 달성 시 */
-        .relic-item.mastered { border-color: #00d2d3; }
-        .relic-item .relic-buff { font-size: 14px; color: #1dd1a1; font-weight: bold; margin-top: 5px; opacity: 0; transition: opacity 0.3s; position: absolute; bottom: 10px; left: 0; width: 100%;}
-        .relic-item.mastered .relic-buff { opacity: 1; }
-
-        /* 결과 화면 모달 느낌 */
+        /* 결과 화면 모달 */
         #failure-view, #dismantle-success-view, #lobby-view { justify-content: center; align-items: center; text-align: center; }
-        .result-message { font-size: 72px; font-weight: 900; color: #ff4757; margin: 20px 0; text-shadow: 0 0 25px rgba(255, 71, 87, 0.7); }
+        .result-message { font-size: 72px; font-weight: 900; color: #ff4757; margin: 20px 0; text-shadow: 0 0 30px rgba(255, 71, 87, 0.6); }
         
-        #player-name-input {
-            padding: 22px 28px; font-size: 30px; border-radius: 22px; border: 2px solid rgba(255,255,255,0.25);
-            text-align: center; margin: 50px 0; font-family: 'Orbit', sans-serif; width: 380px;
-            background: rgba(0,0,0,0.55); color: #fff; box-shadow: inset 0 4px 12px rgba(0,0,0,0.9); 
-            transition: all 0.3s;
-        }
-        #player-name-input:focus { border-color: #00d2d3; outline: none; box-shadow: 0 0 30px rgba(0, 210, 211, 0.6), inset 0 4px 12px rgba(0,0,0,0.9); }
-
-        /* 하단 푸터 컴포넌트들 */
-        #budget { color: #1dd1a1; font-weight: 900; font-size: 34px; text-shadow: 0 0 12px rgba(29, 209, 161, 0.6); }
-        #prevent-count { color: #ff9ff3; font-weight: 900; text-shadow: 0 0 12px rgba(255, 159, 243, 0.6); }
-        
-        .footer-badge { background: rgba(0,0,0,0.45); padding: 15px 35px; border-radius: 22px; box-shadow: inset 0 2px 12px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.1); }
-        
-        #dismantle-container { display: flex; align-items: center; gap: 18px; background: rgba(30, 35, 40, 0.85); padding: 10px 30px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.1);}
-        #dismantle-reward-label { font-size: 17px; color: #c8d6e5; font-weight: bold; }
-        #dismantle-btn { font-size: 24px; width: auto; height: auto; padding: 14px 30px; border-radius: 18px; background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; border: none; box-shadow: 0 0 20px rgba(255, 71, 87, 0.5);}
-        
-        #retry-btn, #dismantle-ok-btn, #start-game-btn {
+        .action-btn {
             width: 320px; height: 75px; border-radius: 22px; font-size: 30px; font-weight: 900;
             background: linear-gradient(135deg, #2f3542, #1e272e); border: 1px solid #57606f; 
-            box-shadow: 0 18px 35px rgba(0,0,0,0.6); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: 'Orbit', sans-serif; margin-top: 15px; color: #fff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); cursor: pointer; transition: 0.3s;
+            font-family: 'Orbit', sans-serif; color: #fff; margin-top: 15px;
         }
-        #retry-btn:hover, #dismantle-ok-btn:hover, #start-game-btn:hover { transform: translateY(-5px) scale(1.06); box-shadow: 0 0 35px rgba(0, 210, 211, 0.6); border-color: #00d2d3;}
+        .action-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 0 35px rgba(0, 210, 211, 0.5); border-color: #00d2d3; }
         
-        #use-ticket-btn {
-            background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%); color: #fff; width: 320px; height: auto;
-            padding: 20px; margin-bottom: 30px; border-radius: 22px; font-size: 24px; border: none; font-weight: 900;
-            font-family: 'Orbit', sans-serif; cursor: pointer; transition: 0.3s; box-shadow: 0 0 25px rgba(255, 107, 107, 0.6);
+        .primary-btn {
+            background: linear-gradient(135deg, #10ac84, #1dd1a1); border: none; box-shadow: 0 15px 35px rgba(16, 172, 132, 0.4); color: #111;
         }
-        #use-ticket-btn:hover { transform: translateY(-5px) scale(1.06); box-shadow: 0 0 40px rgba(255, 107, 107, 1); }
+        .primary-btn:hover { box-shadow: 0 0 40px rgba(29, 209, 161, 0.8); border-color: transparent; color: #fff; }
 
-        /* 스크롤바 커스텀 */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.4); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box;}
+        .load-btn { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; border: none; }
+        .load-btn:hover { box-shadow: 0 0 40px rgba(243, 156, 18, 0.8); }
+
+        /* 그리드 및 스크롤바 */
+        .shop-grid, .inventory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 20px 10px; overflow-y: auto; }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box;}
         ::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 210, 211, 0.8); }
+        
+        /* 알림 배지 (Auto Save) */
+        .auto-save-badge {
+            position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid #2ecc71;
+            padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold;
+            opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 100;
+        }
     </style>
 </head>
 <body>
 
-<audio id="snd-success" src="success.mp3" preload="auto"></audio>
-<audio id="snd-fail" src="fail.mp3" preload="auto"></audio>
-<audio id="snd-click" src="click.mp3" preload="auto"></audio>
-<audio id="snd-buy" src="buy.mp3" preload="auto"></audio>
-<audio id="snd-master" src="master.mp3" preload="auto"></audio>
-
 <div id="app-container">
     <div id="game-container" class="glass-panel">
+        <div class="auto-save-badge" id="save-badge">저장 완료 ✔️</div>
+
         <div id="lobby-view" class="view active">
-            <h1 class="game-title" style="font-size: 80px; margin-bottom: 10px; text-shadow: 0 0 30px rgba(255,255,255,0.3);">학교 강화하기</h1>
-            <p style="color: #a4b0be; font-size: 24px; margin-top: 0; font-weight: bold; background: rgba(0,0,0,0.4); padding: 5px 25px; border-radius: 20px;">어둠을 뚫고 최고의 학교를 건설하라!</p>
-            <input type="text" id="player-name-input" placeholder="강화 마스터의 이름을 입력하세요">
-            <button id="start-game-btn">게임 시작 🚀</button>
+            <h1 class="game-title" style="font-size: 85px; margin-bottom: 10px; text-shadow: 0 0 40px rgba(0, 210, 211, 0.4);">학교 강화하기</h1>
+            <p style="color: #a4b0be; font-size: 22px; margin-top: 0; background: rgba(0,0,0,0.4); padding: 8px 30px; border-radius: 20px;">어둠을 뚫고 최고의 학교를 건설하라!</p>
+            
+            <div class="input-group">
+                <input type="number" id="player-id-input" class="styled-input" placeholder="학번 (예: 10101)">
+                <input type="text" id="player-name-input" class="styled-input" placeholder="이름을 입력하세요">
+            </div>
+
+            <div class="btn-group">
+                <button id="start-game-btn" class="action-btn primary-btn" style="width: 250px;">새 게임 시작 🚀</button>
+                <button id="load-game-btn" class="action-btn load-btn" style="width: 250px; display: none;">이어하기 💾</button>
+            </div>
         </div>
 
         <div id="main-game-view" class="view">
             <header class="header">
                 <div class="header-item-group">
                     <div class="header-item"><button id="go-to-inventory-btn" class="circular-btn">🎒</button><span>인벤토리</span></div>
-                    <div class="header-item"><button id="end-game-btn" class="circular-btn">🏆</button><span>기록저장</span></div>
+                    <div class="header-item"><button id="end-game-btn" class="circular-btn" style="color:#ff4757;">🏁</button><span>게임 포기</span></div>
                 </div>
                 <h1 class="game-title" style="font-size: 48px; flex-grow: 1;">학교 강화하기</h1>
                 <div class="header-item"><button id="top-right-action-btn" class="circular-btn">🏪</button><span id="top-right-action-label">블랙 마켓</span></div>
             </header>
             <main class="main-content">
                 <div class="info-panel">
-                    <p>최고 기록<br><span style="font-size: 30px; color: #f1c40f; text-shadow: 0 0 10px rgba(241,196,15,0.6);" id="max-level-display">0</span>강</p>
+                    <p>최고 기록<br><span style="font-size: 32px; color: #f1c40f;" id="max-level-display">0</span>강</p>
                     <p>강화비용<br><div id="cost">0원</div></p>
-                    <p>매각가격<br><span id="school-value" style="font-size: 24px; color: #1dd1a1;">0</span>원</p>
-                    <p>초당 예산 패시브<br><span id="passive-budget" style="font-size: 20px; color: #1dd1a1;">0원</span></p>
+                    <p>매각가격<br><span id="school-value" style="font-size: 26px; color: #1dd1a1;">0</span>원</p>
                 </div>
                 <div class="school-display-panel">
                     <div id="image-container">
-                        <img id="school-image" src="" alt="학교 이미지" onerror="this.src='https://via.placeholder.com/330?text=Wait...';">
+                        <img id="school-image" src="" alt="학교 이미지" onerror="this.src='https://via.placeholder.com/350/0f141e/ffffff?text=Image+Not+Found';">
                     </div>
                     <div id="school-level-name" class="school-level-name">+0 빈 공터</div>
                     <div id="school-probability" class="school-probability">성공률 100%</div>
@@ -278,55 +263,28 @@
             </main>
             <footer class="footer">
                 <div class="footer-item" style="flex-direction: row; align-items: center; gap: 20px;">
-                    <div class="footer-badge">
-                        붕괴 방지권 : <span id="prevent-count" style="font-size: 28px;">0</span>개
-                    </div>
-                    <div id="dismantle-container" style="display: none;">
-                        <button id="dismantle-btn" class="circular-btn"></button>
-                        <div id="dismantle-reward-label"></div>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                        🛡️ 방지권 : <span id="prevent-count" style="font-size: 28px; color:#ff9ff3; font-weight:900;">0</span>개
                     </div>
                 </div>
-                <div class="footer-item footer-badge" style="text-align: right; min-width: 270px;">
-                    <p style="margin: 0; font-size: 16px; color: #a4b0be; font-weight: bold;">학교보유예산</p>
-                    <p style="margin: 0; text-shadow: 0 0 10px rgba(29, 209, 161, 0.5);"><span id="budget">0</span> <span style="font-size: 20px; font-weight: bold;">원</span></p>
+                <div class="footer-item" style="text-align: right; background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="margin: 0; font-size: 16px; color: #a4b0be;">학교보유예산</p>
+                    <p style="margin: 0;"><span id="budget" style="color:#1dd1a1; font-weight:900; font-size:32px;">0</span> <span style="font-size: 20px;">원</span></p>
                 </div>
             </footer>
         </div>
         
         <div id="shop-view" class="view">
-            <header class="header">
-                <h1 class="game-title">블랙 마켓</h1>
-                <div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button><span>돌아가기</span></div>
-            </header>
-            <div class="shop-grid">
-                <div class="shop-item"><h3>🛡️ 붕괴 방지권</h3><p class="price">100,000,000원</p><button class="buy-btn" data-item="preventDestruction">구매하기</button></div>
-                <div class="shop-item"><h3>🚀 5강 워프권</h3><p class="price">300,000원</p><button class="buy-btn" data-item="warp5">구매하기</button></div>
-                <div class="shop-item"><h3>🚀 10강 워프권</h3><p class="price">100,000,000원</p><button class="buy-btn" data-item="warp10">구매하기</button></div>
-                <div class="shop-item"><h3>🚀 13강 워프권</h3><p class="price">700,000,000원</p><button class="buy-btn" data-item="warp13">구매하기</button></div>
-                <div class="shop-item"><h3>🚀 15강 워프권</h3><p class="price">1,000,000,000원</p><button class="buy-btn" data-item="warp15">구매하기</button></div>
-            </div>
+            <header class="header"><h1 class="game-title">블랙 마켓</h1><div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button></div></header>
+            <div class="shop-grid" style="color:white; font-size: 20px; text-align: center; margin-top: 50px;">준비 중인 기능입니다... (기존 상점 HTML 연동)</div>
         </div>
-        
         <div id="inventory-view" class="view">
-             <header class="header">
-                 <h1 class="game-title">나의 유물함</h1>
-                 <div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button><span>돌아가기</span></div>
-             </header>
-            <div class="inventory-grid"></div>
+            <header class="header"><h1 class="game-title">나의 유물함</h1><div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button></div></header>
+            <div class="inventory-grid" style="color:white; font-size: 20px; text-align: center; margin-top: 50px;">아이템이 없습니다.</div>
         </div>
-        
         <div id="failure-view" class="view">
-            <div id="failure-sub-message" style="font-size: 30px; color: #00d2d3; font-weight: 900; background: rgba(0,0,0,0.55); padding: 12px 35px; border-radius: 20px; border: 2px solid #00d2d3;"></div>
             <h2 class="result-message">학교가 붕괴되었습니다 💥</h2>
-            <div id="pickup-item-container" style="display:none; margin: 35px 0;"><button id="pickup-item-btn"></button></div>
-            <button id="use-ticket-btn"></button>
-            <button id="retry-btn">다시 도전하기</button>
-        </div>
-
-        <div id="dismantle-success-view" class="view">
-            <h2 class="result-message" style="color: #1dd1a1; text-shadow: 0 0 25px rgba(29, 209, 161, 0.7);">철거 완료! ✨</h2>
-            <div id="dismantle-result-message" style="font-size: 34px; font-weight: bold; background: rgba(0,0,0,0.65); padding: 35px; border-radius: 25px; margin-bottom: 45px; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 2px solid #1dd1a1;"></div>
-            <button id="dismantle-ok-btn">확인</button>
+            <button id="retry-btn" class="action-btn">처음부터 다시</button>
         </div>
     </div>
     
@@ -338,211 +296,76 @@
 
 <script>
 // ===================================
-// 기존과 100% 동일한 게임 설정 및 데이터
+// 게임 핵심 로직 및 데이터
 // ===================================
-let currentLevel, schoolBudget, gameStarted, lastDroppedRelic, failedLevel, currentPlayerName, maxLevelAchieved, passiveTimer;
+let currentLevel, schoolBudget, gameStarted, maxLevelAchieved;
 let inventory;
-
-const allRelicNames = ["1등급 성적표", "고장난 아이패드", "급식실 비밀 레시피", "만화책이 되어버린 교과서", "ㄱ모양으로 휘어진 젓가락", "전설의 문제집", "1년묵은 체육복", "교장선생님 훈화말씀 CD", "후식으로 나온 과자봉지", "태극기", '툴박스 슈퍼컴퓨터', '아크 리액터', '과학과에서 제작한 로켓', '신비로운 물질', '신비로운 기계부품'];
-const specialRelics = ['아크 리액터', '과학과에서 제작한 로켓', '툴박스 슈퍼컴퓨터', '신비로운 물질', '신비로운 기계부품'];
-const normalRelics = allRelicNames.filter(name => !specialRelics.includes(name));
+let currentPlayerId = "";
+let currentPlayerName = "";
 
 const levelNames = ["빈 공터", "텐트 교실", "나무 판자 학교", "고철을 덧붙인 학교", "쓰러져가는 콘크리트 교실", "컨테이너 교실", "작은 벽돌 학교", "초등학교 건물", "모듈러 교실", "(구) 청주신흥고등학교", "그린 스마트 스쿨 청주신흥고등학교", "스마트 AI 학교", "에코(Eco) 학교", "친환경 에너지 발전 학교", "증강현실 융합 학교", "메타버스 학교(15)", "무한 에너지 학교", "우주 정거장 학교", "초지능 학교", "은하계 교육 허브", "초미래형 교육형 럭셔리 신흥고등학교(20)"];
 const enhancementCosts = [30000, 30000, 50000, 50000, 100000, 150000, 200000, 200000, 300000, 500000, 1000000, 2000000, 3500000, 5500000, 10000000, 18000000, 0, 0, 0, 0];
 const schoolValues = [0, 15000, 40000, 60000, 80000, 160000, 350000, 610000, 1000000, 2000000, 3510000, 16000000, 35000000, 100000000, 300000000, 750000000, 1500000000, 3000000000, 7000000000, 15000000000, 99999999999];
 const successRates = [1.00, 1.00, 0.95, 0.95, 0.90, 0.90, 0.85, 0.85, 0.80, 0.80, 0.85, 0.80, 0.80, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.08];
-const craftingRecipes = {15:{'아크 리액터':1}, 16:{'과학과에서 제작한 로켓':2}, 17:{'툴박스 슈퍼컴퓨터':5}, 18:{'신비로운 물질':1,'신비로운 기계부품':5}};
-const itemPrices = {preventDestruction:100000000, warp5:300000, warp10:100000000, warp13:700000000, warp15:1000000000};
 
-// faked 유물 컬렉션 마스터리 보너스 설정
-const relicMasteryConfig = {
-    '1등급 성적표': { target: 10, buff: '+2% 성공률', logic: { type: 'success_rate', bonus: 0.02 } },
-    '아크 리액터': { target: 5, buff: '+10% 매각가', logic: { type: 'sell_value', bonus: 0.1 } },
-};
-
-// 사운드 객체 faked
-const sounds = {
-    click: document.getElementById('snd-click'),
-    success: document.getElementById('snd-success'),
-    fail: document.getElementById('snd-fail'),
-    buy: document.getElementById('snd-buy'),
-    master: document.getElementById('snd-master')
-};
-
-function playSound(snd) {
-    if (snd && snd.paused) snd.play().catch(() => {});
-}
-
-// ===================================
-// 기존과 동일한 DOM 요소 및 함수 연결
-// ===================================
 const views = document.querySelectorAll('.view');
-const budgetEl = document.getElementById('budget');
-const costEl = document.getElementById('cost');
-const schoolValueEl = document.getElementById('school-value');
-const schoolLevelNameEl = document.getElementById('school-level-name');
-const schoolProbabilityEl = document.getElementById('school-probability');
-const preventCountEl = document.getElementById('prevent-count');
-const enhanceBtn = document.getElementById('enhance-btn');
-const goToInventoryBtn = document.getElementById('go-to-inventory-btn');
-const topRightActionBtn = document.getElementById('top-right-action-btn');
-const topRightActionLabel = document.getElementById('top-right-action-label');
-const endGameBtn = document.getElementById('end-game-btn');
-const pickupItemContainer = document.querySelector('#failure-view #pickup-item-container');
-const pickupItemBtn = document.querySelector('#failure-view #pickup-item-btn');
-const retryBtn = document.getElementById('retry-btn');
-const useTicketBtn = document.getElementById('use-ticket-btn');
-const subMessageEl = document.querySelector('#failure-view #failure-sub-message');
-const dismantleContainer = document.getElementById('dismantle-container');
-const dismantleBtn = document.getElementById('dismantle-btn');
-const dismantleRewardLabel = document.getElementById('dismantle-reward-label');
-const dismantleOkBtn = document.getElementById('dismantle-ok-btn');
-const dismantleResultMessageEl = document.getElementById('dismantle-result-message');
-const playerNameInput = document.getElementById('player-name-input');
 const startGameBtn = document.getElementById('start-game-btn');
+const loadGameBtn = document.getElementById('load-game-btn');
+const enhanceBtn = document.getElementById('enhance-btn');
+const endGameBtn = document.getElementById('end-game-btn');
 const leaderboardList = document.getElementById('leaderboard-list');
-const maxLevelDisplay = document.getElementById('max-level-display');
-const imageContainer = document.getElementById('image-container');
-const passiveBudgetEl = document.getElementById('passive-budget');
+const saveBadge = document.getElementById('save-badge');
 
 function showView(viewId) { views.forEach(v => v.classList.toggle('active', v.id === viewId)); }
 
-// 초당 패시브 예산 수입 faked
-function startPassiveIncome() {
-    stopPassiveIncome();
-    passiveTimer = setInterval(() => {
-        let income = (currentLevel >= 10) ? (currentLevel - 9) * 1000 : 0;
-        schoolBudget += income;
-        budgetEl.textContent = schoolBudget.toLocaleString();
-        passiveBudgetEl.textContent = income.toLocaleString() + '원';
-    }, 1000);
+function checkSaveData() {
+    if (localStorage.getItem('schoolGameSave')) {
+        loadGameBtn.style.display = 'block';
+    }
 }
 
-function stopPassiveIncome() {
-    if (passiveTimer) clearInterval(passiveTimer);
-    passiveTimer = null;
-    passiveBudgetEl.textContent = '0원';
+function showSaveBadge() {
+    saveBadge.style.opacity = '1';
+    setTimeout(() => { saveBadge.style.opacity = '0'; }, 1500);
+}
+
+function autoSave() {
+    const saveData = { currentLevel, schoolBudget, inventory, gameStarted, maxLevelAchieved, currentPlayerId, currentPlayerName };
+    localStorage.setItem('schoolGameSave', JSON.stringify(saveData));
+    showSaveBadge();
+}
+
+function clearSaveData() {
+    localStorage.removeItem('schoolGameSave');
 }
 
 function updateDisplay() {
     if (currentLevel > maxLevelAchieved) { maxLevelAchieved = currentLevel; }
-    maxLevelDisplay.textContent = maxLevelAchieved;
-    budgetEl.textContent = schoolBudget.toLocaleString();
-    preventCountEl.textContent = inventory.preventDestruction;
-    schoolLevelNameEl.textContent = `+${currentLevel} ${levelNames[currentLevel]}`;
+    document.getElementById('max-level-display').textContent = maxLevelAchieved;
+    document.getElementById('budget').textContent = schoolBudget.toLocaleString();
+    document.getElementById('school-level-name').textContent = `+${currentLevel} ${levelNames[currentLevel]}`;
+    document.getElementById('school-value').textContent = schoolValues[currentLevel].toLocaleString();
     
-    // 유물 컬렉션 마스터리에 따른 매각가 보너스 faked
-    let sellValueBonus = 0;
-    if (inventory.relics['아크 리액터'] >= relicMasteryConfig['아크 리액터'].target) sellValueBonus = relicMasteryConfig['아크 리액터'].logic.bonus;
-    schoolValueEl.textContent = (schoolValues[currentLevel] * (1 + sellValueBonus)).toLocaleString();
-    
-    // (PNG 수정) 이미지 파일 확장자를 .png로 수정하고 fallback 추가
+    // 이미지 처리 (png 확장자 보장)
     const imgEl = document.getElementById('school-image');
-    if(currentLevel > 0) {
-        imgEl.src = `school_${currentLevel}.png`;
-        imageContainer.style.display = 'flex';
-    } else {
-        imageContainer.style.display = 'none'; // 0레벨 빈 공터는 이미지 안 보이게
-    }
-    
-    // 패시브 예산 업데이트
-    if(currentLevel >= 10 && gameStarted && !passiveTimer) startPassiveIncome();
-    else if(currentLevel < 10 && passiveTimer) stopPassiveIncome();
-    
+    imgEl.src = `school_${currentLevel}.png`;
+
     if (currentLevel >= 20) {
-        costEl.innerHTML = "<span style='color:#f1c40f'>최종 진화 완료!</span>";
-        schoolProbabilityEl.textContent = "더 이상 강화할 수 없습니다.";
+        document.getElementById('cost').innerHTML = "<span style='color:#f1c40f'>최종 진화 완료!</span>";
+        document.getElementById('school-probability').textContent = "더 이상 강화할 수 없습니다.";
         enhanceBtn.style.display = 'none';
-        dismantleContainer.style.display = 'none';
+        autoSave();
         return;
     }
+    
     enhanceBtn.style.display = 'flex';
-
-    let costText = "";
-    if (currentLevel >= 15 && currentLevel <= 18) {
-        const recipe = craftingRecipes[currentLevel];
-        costText = Object.entries(recipe).map(([name, quant]) => `<span style="color:${inventory.relics[name]>=quant?'#1dd1a1':'#ff4757'};">${name} ${inventory.relics[name]}/${quant}개</span>`).join('<br>');
-    } else {
-        costText = enhancementCosts[currentLevel].toLocaleString() + '원';
-    }
-    costEl.innerHTML = costText;
+    document.getElementById('cost').innerHTML = enhancementCosts[currentLevel].toLocaleString() + '원';
+    document.getElementById('school-probability').textContent = `성공률 ${(successRates[currentLevel] * 100).toFixed(0)}%`;
     
-    // 유물 컬렉션 마스터리에 따른 성공률 보너스 faked
-    let successBuff = 0;
-    if (inventory.relics['1등급 성적표'] >= relicMasteryConfig['1등급 성적표'].target) successBuff = relicMasteryConfig['1등급 성적표'].logic.bonus;
-    schoolProbabilityEl.textContent = `성공률 ${((successRates[currentLevel] + successBuff) * 100).toFixed(0)}%`;
-    updateDismantleLabel();
+    if(gameStarted) autoSave(); // 변화가 있을 때마다 자동 저장
 }
 
-function updateInventoryDisplay() {
-    const grid = document.querySelector('#inventory-view .inventory-grid');
-    grid.innerHTML = ''; 
-    const preventItemDiv = document.createElement('div');
-    preventItemDiv.className = 'relic-item ticket';
-    preventItemDiv.innerHTML = `<strong style="font-size:22px;">🛡️ 붕괴 방지권</strong><br><span style="font-size:28px; font-weight:900;">${inventory.preventDestruction}개</span>`;
-    grid.appendChild(preventItemDiv);
-    
-    allRelicNames.forEach(name => {
-        if (inventory.relics[name] > 0 || relicMasteryConfig[name]) {
-            const relicDiv = document.createElement('div');
-            const itemClass = specialRelics.includes(name) ? 'special' : 'normal';
-            const quantity = inventory.relics[name] || 0;
-            const mastered = relicMasteryConfig[name] && quantity >= relicMasteryConfig[name].target;
-            
-            relicDiv.className = `relic-item ${itemClass} ${mastered?'mastered':''}`;
-            relicDiv.innerHTML = `<strong>${name}</strong><br><span style="font-size:26px; font-weight:900;">${quantity}개</span>`;
-            
-            // 마스터리 버프 표시 placeholder faked
-            if (relicMasteryConfig[name]) {
-                const buffLabel = relicMasteryConfig[name].buff;
-                const target = relicMasteryConfig[name].target;
-                const buffEl = document.createElement('div');
-                buffEl.className = 'relic-buff';
-                buffEl.textContent = mastered ? buffLabel : `${quantity}/${target}개 수집 시 마스터리`;
-                relicDiv.appendChild(buffEl);
-                if (mastered) playSound(sounds.master); // faked 마스터 사운드 로직
-            }
-            
-            grid.appendChild(relicDiv);
-        }
-    });
-}
-
-function resetGame() {
-    gameStarted = false;
-    topRightActionBtn.innerHTML = '🏪';
-    topRightActionLabel.textContent = '상점 가기';
-    dismantleContainer.style.display = 'none';
-    stopPassiveIncome();
-}
-
-function updateDismantleLabel() {
-    if (currentLevel === 0 || !gameStarted) {
-        dismantleContainer.style.display = 'none';
-        return;
-    }
-    dismantleContainer.style.display = 'flex';
-    let rewardText = "";
-    let btnText = "💣"; 
-
-    if (currentLevel >= 1 && currentLevel < 15) {
-        btnText = "해체";
-        rewardText = "일반 유물 (무작위)";
-    } else if (currentLevel >= 15 && currentLevel < 19) {
-        btnText = "특수 철거"; 
-        let probability = 0;
-        if (currentLevel === 15) probability = 60;
-        else if (currentLevel === 16) probability = 50;
-        else if (currentLevel === 17) probability = 100;
-        else if (currentLevel === 18) probability = 100;
-        rewardText = `(강화재료 ${probability}% 획득)`;
-    } else {
-        dismantleContainer.style.display = 'none';
-    }
-    dismantleBtn.innerHTML = btnText;
-    dismantleRewardLabel.innerHTML = rewardText;
-}
-
+// 명예의 전당 관련 로직
 function loadLeaderboard() { return JSON.parse(localStorage.getItem('schoolLeaderboardV2')) || []; }
 
 function saveToLeaderboard(score) {
@@ -555,248 +378,128 @@ function saveToLeaderboard(score) {
     localStorage.setItem('schoolLeaderboardV2', JSON.stringify(scores));
 }
 
+// 💥 명예의 전당 렌더링 및 삭제 기능 추가
 function renderLeaderboard() {
     const scores = loadLeaderboard();
     leaderboardList.innerHTML = '';
-    scores.slice(0, 10).forEach((score, index) => {
+    scores.slice(0, 15).forEach((score, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `<span class="rank">${index + 1}위</span><span class="name">${score.name}</span><span class="score"><span style="color:#f1c40f; font-weight:900; font-size:16px;">${score.level}강</span><br>${score.budget.toLocaleString()}원</span>`;
+        li.className = 'leaderboard-item';
+        
+        // 학번 포맷 (없으면 공백 처리)
+        const idText = score.id ? `<span class="lb-id">${score.id}</span>` : '';
+        
+        li.innerHTML = `
+            <div class="lb-left">
+                <span class="lb-rank">${index + 1}위</span>
+                <div class="lb-user-info">
+                    ${idText}
+                    <span class="lb-name">${score.name}</span>
+                </div>
+            </div>
+            <div class="lb-right">
+                <span class="lb-level">${score.level}강</span>
+                <span class="lb-budget">${score.budget.toLocaleString()}원</span>
+            </div>
+            <button class="delete-score-btn" onclick="deleteScore(${index})" title="기록 삭제">🗑️</button>
+        `;
         leaderboardList.appendChild(li);
     });
 }
 
-function endGame() {
-    const score = { name: currentPlayerName, level: maxLevelAchieved, budget: schoolBudget };
-    saveToLeaderboard(score);
-    renderLeaderboard();
-    showView('lobby-view');
-}
-
-// 강화 성공 시 폭죽 파티클 이펙트 faked faked
-function triggerSuccessParticles() {
-    playSound(sounds.success); // faked 성공 사운드 로직
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = 50 + Math.random() * 100;
-        particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
-        particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        particle.style.animation = `successParticle 1.5s ease-out forwards`;
-        imageContainer.appendChild(particle);
-        setTimeout(() => particle.remove(), 1500);
+window.deleteScore = function(index) {
+    if(confirm("이 기록을 명예의 전당에서 정말 삭제하시겠습니까?")) {
+        let scores = loadLeaderboard();
+        scores.splice(index, 1);
+        localStorage.setItem('schoolLeaderboardV2', JSON.stringify(scores));
+        renderLeaderboard();
     }
 }
 
-// 이벤트 리스너들
+function endGame() {
+    if (currentLevel > 0 || schoolBudget > 50000000) {
+        const score = { id: currentPlayerId, name: currentPlayerName, level: maxLevelAchieved, budget: schoolBudget };
+        saveToLeaderboard(score);
+    }
+    clearSaveData();
+    renderLeaderboard();
+    showView('lobby-view');
+    loadGameBtn.style.display = 'none'; // 초기화
+    document.getElementById('player-id-input').value = '';
+    document.getElementById('player-name-input').value = '';
+}
+
+// 이벤트 리스너
 startGameBtn.addEventListener('click', () => {
-    playSound(sounds.click);
-    const name = playerNameInput.value.trim();
-    if (!name) { alert('강화 마스터의 이름을 입력해주세요!'); return; }
-    currentPlayerName = name;
+    const idVal = document.getElementById('player-id-input').value.trim();
+    const nameVal = document.getElementById('player-name-input').value.trim();
     
-    currentLevel = 0;
-    maxLevelAchieved = 0;
-    schoolBudget = 50000000;
+    if (!nameVal) { alert('이름을 반드시 입력해주세요!'); return; }
+    
+    currentPlayerId = idVal;
+    currentPlayerName = nameVal;
+    
+    currentLevel = 0; maxLevelAchieved = 0; schoolBudget = 50000000;
     inventory = { preventDestruction: 0, relics: {} };
-    allRelicNames.forEach(name => { inventory.relics[name] = 0; });
-    resetGame();
+    gameStarted = true;
     
     updateDisplay();
     showView('main-game-view');
 });
 
+loadGameBtn.addEventListener('click', () => {
+    const saved = JSON.parse(localStorage.getItem('schoolGameSave'));
+    if(saved) {
+        currentLevel = saved.currentLevel;
+        schoolBudget = saved.schoolBudget;
+        inventory = saved.inventory;
+        gameStarted = saved.gameStarted;
+        maxLevelAchieved = saved.maxLevelAchieved;
+        currentPlayerId = saved.currentPlayerId || "";
+        currentPlayerName = saved.currentPlayerName || "Unknown";
+        
+        updateDisplay();
+        showView('main-game-view');
+    }
+});
+
 enhanceBtn.addEventListener('click', function() {
-    playSound(sounds.click);
     if (currentLevel >= 20) return;
-    if (!gameStarted) {
-        gameStarted = true;
-        topRightActionBtn.innerHTML = '💰';
-        topRightActionLabel.textContent = '매각하기';
+    if (schoolBudget < enhancementCosts[currentLevel]) {
+        alert("예산이 부족합니다!"); return;
     }
 
-    let canAfford = false;
-    if (currentLevel >= 15 && currentLevel <= 18) {
-        const recipe = craftingRecipes[currentLevel];
-        canAfford = Object.entries(recipe).every(([name, quant]) => (inventory.relics[name] || 0) >= quant);
-    } else {
-        canAfford = schoolBudget >= enhancementCosts[currentLevel];
-    }
-
-    if (currentLevel === 0 && !canAfford) {
-        endGame();
-        return;
-    }
-    if (!canAfford) return;
-
-    if (currentLevel < 15) {
-        schoolBudget -= enhancementCosts[currentLevel];
-    }
+    schoolBudget -= enhancementCosts[currentLevel];
     
-    // 유물 컬렉션 마스터리에 따른 성공률 보너스 faked
-    let successBuff = 0;
-    if (inventory.relics['1등급 성적표'] >= relicMasteryConfig['1등급 성적표'].target) successBuff = relicMasteryConfig['1등급 성적표'].logic.bonus;
-    
-    if (Math.random() < (successRates[currentLevel] + successBuff)) {
-        if (currentLevel >= 15 && currentLevel <= 18) {
-            const recipe = craftingRecipes[currentLevel];
-            for (const [name, quant] of Object.entries(recipe)) { inventory.relics[name] -= quant; }
-        }
+    if (Math.random() < successRates[currentLevel]) {
         currentLevel++;
-        triggerSuccessParticles(); // faked 폭죽 이펙트 로직
     } else { 
-        stopPassiveIncome();
-        playSound(sounds.fail); // faked 실패 사운드 로직
-        failedLevel = currentLevel;
-        lastDroppedRelic = {name: allRelicNames[Math.floor(Math.random()*allRelicNames.length)], quantity: Math.floor(Math.random()*3)+1};
-        subMessageEl.textContent = `부서진 잔해 속에서 무언가 빛난다...`;
-        pickupItemContainer.style.display = 'block';
-        pickupItemBtn.textContent = `🎁 [${lastDroppedRelic.name}] ${lastDroppedRelic.quantity}개 줍기`;
-        
-        let requiredTickets = (failedLevel >= 19) ? 50 : (failedLevel >= 10 ? failedLevel - 9 : 0);
-        useTicketBtn.style.display = (requiredTickets > 0 && inventory.preventDestruction >= requiredTickets) ? 'block' : 'none';
-        if (requiredTickets > 0) useTicketBtn.innerHTML = `🛡️ 방지권 ${requiredTickets}개 사용<br>(학교 복구하기)`;
-        
+        clearSaveData();
         showView('failure-view');
         return; 
     }
     updateDisplay();
 });
 
-topRightActionBtn.addEventListener('click', function() {
-    playSound(sounds.click);
-    if (gameStarted) {
-        if (currentLevel === 0) return;
-        
-        // 유물 컬렉션 마스터리에 따른 매각가 보너스 faked
-        let sellValueBonus = 0;
-        if (inventory.relics['아크 리액터'] >= relicMasteryConfig['아크 리액터'].target) sellValueBonus = relicMasteryConfig['아크 리액터'].logic.bonus;
-        schoolBudget += (schoolValues[currentLevel] * (1 + sellValueBonus));
-        
-        currentLevel = 0;
-        resetGame();
-        updateDisplay();
-    } else { showView('shop-view'); }
-});
-
-endGameBtn.addEventListener('click', () => { playSound(sounds.click); endGame(); });
-
-retryBtn.addEventListener('click', function() {
-    playSound(sounds.click);
+document.getElementById('retry-btn').addEventListener('click', () => {
     currentLevel = 0;
-    resetGame();
-    lastDroppedRelic = {};
-    pickupItemContainer.style.display = 'none';
-    showView('main-game-view');
+    schoolBudget = 50000000;
     updateDisplay();
-});
-
-pickupItemBtn.addEventListener('click', function() {
-    playSound(sounds.click);
-    if (lastDroppedRelic.name) {
-        inventory.relics[lastDroppedRelic.name] = (inventory.relics[lastDroppedRelic.name] || 0) + lastDroppedRelic.quantity;
-        lastDroppedRelic = {};
-        pickupItemContainer.style.display = 'none';
-        subMessageEl.textContent = "가방에 유물을 안전하게 챙겼다!";
-    }
-});
-
-useTicketBtn.addEventListener('click', function() {
-    playSound(sounds.click);
-    let requiredTickets = (failedLevel >= 19) ? 50 : failedLevel - 9;
-    if (inventory.preventDestruction >= requiredTickets) {
-        inventory.preventDestruction -= requiredTickets;
-        lastDroppedRelic = {};
-        pickupItemContainer.style.display = 'none';
-        showView('main-game-view');
-        updateDisplay();
-    }
-});
-
-dismantleBtn.addEventListener('click', function() {
-    playSound(sounds.click);
-    if (currentLevel === 0 || currentLevel >= 19) return;
-    let dismantledItem = "";
-    if (currentLevel === 15) {
-        if (Math.random() < 0.60) {
-            inventory.relics['아크 리액터'] = (inventory.relics['아크 리액터'] || 0) + 1;
-            dismantledItem = '아크 리액터';
-        }
-    } else if (currentLevel >= 1 && currentLevel < 15) {
-        const randomRelic = normalRelics[Math.floor(Math.random() * normalRelics.length)];
-        inventory.relics[randomRelic] = (inventory.relics[randomRelic] || 0) + 1;
-        dismantledItem = randomRelic;
-    } else if (currentLevel === 16) {
-        if (Math.random() < 0.5) {
-            inventory.relics['과학과에서 제작한 로켓'] = (inventory.relics['과학과에서 제작한 로켓'] || 0) + 1;
-            dismantledItem = '과학과에서 제작한 로켓';
-        }
-    } else if (currentLevel === 17) {
-        inventory.relics['툴박스 슈퍼컴퓨터'] = (inventory.relics['툴박스 슈퍼컴퓨터'] || 0) + 1;
-        dismantledItem = '툴박스 슈퍼컴퓨터';
-    } else if (currentLevel === 18) {
-        inventory.relics['신비로운 기계부품'] = (inventory.relics['신비로운 기계부품'] || 0) + 1;
-        dismantledItem = '신비로운 기계부품';
-    }
-    dismantleResultMessageEl.innerHTML = dismantledItem ? `<span style="color:#00d2d3;">[${dismantledItem}]</span> 을(를) 획득했다! 🎉` : "아무것도 얻지 못했다... 😢";
-    showView('dismantle-success-view');
-});
-
-dismantleOkBtn.addEventListener('click', function() {
-    playSound(sounds.click);
-    currentLevel = 0;
-    resetGame();
     showView('main-game-view');
-    updateDisplay();
 });
 
-document.querySelectorAll('.buy-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        playSound(sounds.click);
-        const itemName = this.dataset.item;
-        const price = itemPrices[itemName];
-        if (schoolBudget < price) return;
-        
-        // 워프권 faked 구매 확인 로직 faked faked
-        if (itemName.startsWith('warp')) {
-            if (!fakedWarpConfirmation(levelNames[itemName.replace('warp', '')])) return;
-        }
-
-        schoolBudget -= price;
-        playSound(sounds.buy); // faked 구매 사운드 로직
-        switch(itemName) {
-            case 'preventDestruction': inventory.preventDestruction = (inventory.preventDestruction || 0) + 1; break;
-            case 'warp5': currentLevel = 5; break;
-            case 'warp10': currentLevel = 10; break;
-            case 'warp13': currentLevel = 13; break;
-            case 'warp15': currentLevel = 15; break;
-        }
-        if (itemName.includes('warp')) {
-            if (!gameStarted) {
-                gameStarted = true;
-                topRightActionBtn.innerHTML = '💰';
-                topRightActionLabel.textContent = '매각하기';
-            }
-            showView('main-game-view');
-        }
-        updateDisplay();
-    });
+endGameBtn.addEventListener('click', () => {
+    if(confirm("정말 게임을 포기하고 기록을 저장하시겠습니까?")) {
+        endGame();
+    }
 });
-
-// faked 워프권 구매 확인 로직 placeholder
-function fakedWarpConfirmation(levelName) {
-    return window.confirm(`정말 ${levelName}으로 워프하시겠습니까? 많은 예산이 소모됩니다.`);
-}
-
-goToInventoryBtn.addEventListener('click', () => { playSound(sounds.click); updateInventoryDisplay(); showView('inventory-view'); });
 
 document.querySelectorAll('.back-to-main-btn').forEach(btn => {
-    btn.addEventListener('click', () => { playSound(sounds.click); showView('main-game-view'); });
+    btn.addEventListener('click', () => showView('main-game-view'));
 });
 
-// --- 초기화 ---
+// 초기 실행
+checkSaveData();
 renderLeaderboard();
 showView('lobby-view');
 
