@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>학교 건물 강화하기 (Premium Edition)</title>
+    <title>학교 건물 강화하기 (Dark Premium Edition)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
         
-        /* 1. 다이나믹 애니메이션 배경 (다채롭고 고급스러운 느낌) */
+        /* 1. 다이나믹 애니메이션 배경 (딥 다크 테마) */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -17,19 +17,19 @@
         body {
             font-family: 'Orbit', sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #9b59b6);
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #121212);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #2c3e50; font-weight: 600; overflow: hidden;
+            animation: gradientBG 20s ease infinite;
+            color: #ecf0f1; font-weight: 600; overflow: hidden;
         }
         
-        /* 2. 프리미엄 글래스모피즘 패널 */
+        /* 2. 프리미엄 다크 글래스모피즘 패널 */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(15, 20, 25, 0.7);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255,255,255,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
         }
 
         #app-container { display: flex; gap: 25px; width: 95%; max-width: 1300px; height: 92vh; }
@@ -45,96 +45,97 @@
         
         /* 명예의 전당 타이틀 및 리스트 */
         #leaderboard-container h2 {
-            text-align: center; margin-top: 0; color: #1e272e; font-size: 28px;
-            padding-bottom: 20px; border-bottom: 2px solid rgba(0,0,0,0.1);
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            text-align: center; margin-top: 0; color: #f1c40f; font-size: 28px;
+            padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.1);
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
         }
         
         #leaderboard-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 10px; }
         #leaderboard-list li {
             display: flex; justify-content: space-between; padding: 18px 15px;
             border-radius: 16px; margin-bottom: 12px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid rgba(255,255,255,0.8);
+            background: rgba(30, 35, 40, 0.8);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        #leaderboard-list li:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.1); border-color: #8ec5fc; }
-        #leaderboard-list li .rank { font-weight: 900; color: #e74c3c; width: 50px; font-size: 16px; }
-        #leaderboard-list li .name { font-weight: bold; flex-grow: 1; color: #2c3e50; font-size: 16px; }
-        #leaderboard-list li .score { text-align: right; color: #7f8c8d; font-size: 13px; line-height: 1.4; }
+        #leaderboard-list li:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.6); border-color: #00d2d3; }
+        #leaderboard-list li .rank { font-weight: 900; color: #ff9f43; width: 50px; font-size: 16px; }
+        #leaderboard-list li .name { font-weight: bold; flex-grow: 1; color: #c8d6e5; font-size: 16px; }
+        #leaderboard-list li .score { text-align: right; color: #8395a7; font-size: 13px; line-height: 1.4; }
 
-        /* 타이틀 효과 (네온 & 그라데이션) */
+        /* 타이틀 효과 (네온 글로우) */
         .game-title {
             font-size: 52px; text-align: center; margin: 0; font-weight: 900;
-            background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(to right, #00d2d3, #54a0ff, #5f27cd);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.1); letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 210, 211, 0.4); letter-spacing: -1px;
         }
         
-        /* 공통 원형 버튼 (입체감 강화) */
+        /* 공통 원형 버튼 (다크 메탈 느낌) */
         .circular-btn {
             width: 70px; height: 70px; border-radius: 50%;
-            background: linear-gradient(145deg, #ffffff, #e6e6e6);
-            box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9);
-            border: none; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 32px; display: flex; justify-content: center; align-items: center; user-select: none;
+            background: linear-gradient(145deg, #2b2f36, #1e2227);
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.5), -6px -6px 12px rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 30px; display: flex; justify-content: center; align-items: center; user-select: none;
+            color: #ecf0f1;
         }
-        .circular-btn:hover { transform: scale(1.15) translateY(-5px); box-shadow: 8px 12px 20px rgba(0,0,0,0.15), -6px -6px 12px rgba(255,255,255,0.9); }
-        .circular-btn:active { transform: scale(0.9); box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1), inset -5px -5px 10px rgba(255,255,255,0.9); }
+        .circular-btn:hover { transform: scale(1.15) translateY(-5px); box-shadow: 0 0 20px rgba(0, 210, 211, 0.6); border-color: #00d2d3; }
+        .circular-btn:active { transform: scale(0.9); box-shadow: inset 5px 5px 10px rgba(0,0,0,0.5); }
 
         .view { display: none; flex-direction: column; height: 100%; animation: fadeZoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .view.active { display: flex; }
         @keyframes fadeZoomIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
         /* 헤더 / 푸터 */
-        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 2px dashed rgba(0,0,0,0.1); }
-        .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; border-top: 2px dashed rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
         .header-item-group { display: flex; gap: 20px; }
-        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 15px; font-weight: bold; color: #34495e; gap: 8px; }
+        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 15px; font-weight: bold; color: #a4b0be; gap: 8px; }
         
         .main-content { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; position: relative; }
         
         /* 정보 패널 */
         .info-panel {
-            background: rgba(255,255,255,0.85); padding: 25px; border-radius: 20px; width: 230px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05), inset 0 2px 0 rgba(255,255,255,1);
-            border: 1px solid rgba(255,255,255,0.9); font-size: 18px; line-height: 1.7; z-index: 10;
+            background: rgba(20, 25, 30, 0.8); padding: 25px; border-radius: 20px; width: 230px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); font-size: 18px; line-height: 1.7; z-index: 10;
         }
-        .info-panel p { margin: 12px 0; font-size: 15px; color: #7f8c8d; }
-        .info-panel span, .info-panel div { font-weight: 900; color: #2c3e50; display: block; }
-        #cost { min-height: 55px; color: #e74c3c; font-size: 22px; margin-top: 5px; text-shadow: 1px 1px 0 rgba(255,255,255,0.8); }
+        .info-panel p { margin: 12px 0; font-size: 15px; color: #8395a7; }
+        .info-panel span, .info-panel div { font-weight: 900; color: #ecf0f1; display: block; }
+        #cost { min-height: 55px; color: #ff6b6b; font-size: 22px; margin-top: 5px; text-shadow: 0 0 10px rgba(255, 107, 107, 0.5); }
 
-        /* 3. 학교 이미지 디스플레이 영역 (애니메이션 극대화) */
+        /* 3. 학교 이미지 디스플레이 영역 (다크 & 네온 글로우 효과) */
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 20px rgba(255,255,255,0.4), inset 0 0 20px rgba(255,255,255,0.4); } 50% { box-shadow: 0 0 50px rgba(255,215,0,0.6), inset 0 0 40px rgba(255,215,0,0.4); } 100% { box-shadow: 0 0 20px rgba(255,255,255,0.4), inset 0 0 20px rgba(255,255,255,0.4); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 20px rgba(0, 210, 211, 0.2), inset 0 0 20px rgba(0, 210, 211, 0.2); } 50% { box-shadow: 0 0 60px rgba(0, 210, 211, 0.6), inset 0 0 40px rgba(0, 210, 211, 0.4); } 100% { box-shadow: 0 0 20px rgba(0, 210, 211, 0.2), inset 0 0 20px rgba(0, 210, 211, 0.2); } }
         
         .school-display-panel { text-align: center; display: flex; flex-direction: column; align-items: center; flex-grow: 1; z-index: 5; }
         #image-container {
             width: 360px; height: 360px; display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.2) 80%);
-            border-radius: 35px; border: 3px solid rgba(255,255,255,0.8);
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.6) 80%);
+            border-radius: 35px; border: 2px solid rgba(0, 210, 211, 0.5);
             margin-bottom: 30px; 
             animation: float 4s ease-in-out infinite, pulseGlow 3s infinite;
             position: relative;
         }
-        /* 이미지 스케일 및 그림자 효과 */
         .school-display-panel img { 
             max-width: 85%; max-height: 85%; object-fit: contain; 
-            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.8));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
-        #image-container:hover img { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 30px 35px rgba(0,0,0,0.4)); }
+        #image-container:hover img { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 30px 40px rgba(0, 210, 211, 0.4)); }
         
-        .school-level-name { font-size: 42px; margin-top: 0; font-weight: 900; color: #1e272e; text-shadow: 2px 2px 0px #fff, 4px 4px 10px rgba(0,0,0,0.1); }
-        .school-probability { font-size: 24px; color: #0984e3; background: linear-gradient(135deg, #e0f2fe, #bae6fd); padding: 8px 25px; border-radius: 30px; margin-top: 15px; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.2); font-weight: bold; border: 2px solid #fff;}
+        .school-level-name { font-size: 42px; margin-top: 0; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        .school-probability { font-size: 24px; color: #1dd1a1; background: rgba(29, 209, 161, 0.1); padding: 8px 25px; border-radius: 30px; margin-top: 15px; box-shadow: 0 0 15px rgba(29, 209, 161, 0.3); font-weight: bold; border: 1px solid #1dd1a1;}
         
-        /* 강화 버튼 (황금 망치 느낌) */
+        /* 강화 버튼 (네온 포인트) */
         .action-panel .enhance-btn {
             width: 200px; height: 200px; font-size: 100px;
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            box-shadow: 0 20px 40px rgba(253, 160, 133, 0.5), inset 0 -10px 20px rgba(0,0,0,0.1), inset 0 10px 20px rgba(255,255,255,0.8);
-            border: 6px solid white; z-index: 10;
+            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1);
+            border: 4px solid #f39c12; z-index: 10; color: #fff;
         }
+        .action-panel .enhance-btn:hover { border-color: #e74c3c; box-shadow: 0 0 40px rgba(231, 76, 60, 0.8); }
 
         /* 4. 그리드 아이템 (상점 & 인벤토리) */
         .shop-grid, .inventory-grid {
@@ -143,78 +144,78 @@
         }
         
         .shop-item, .relic-item {
-            background: rgba(255,255,255,0.85); padding: 30px 25px; border-radius: 24px;
-            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8);
+            background: rgba(30, 35, 40, 0.8); padding: 30px 25px; border-radius: 24px;
+            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
             display: flex; flex-direction: column; justify-content: space-between;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden;
         }
         .shop-item::before, .relic-item::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg); transition: 0.5s;
         }
         .shop-item:hover::before, .relic-item:hover::before { left: 200%; }
-        .shop-item:hover, .relic-item:hover { transform: translateY(-10px); box-shadow: 0 25px 45px rgba(0,0,0,0.1); border-color: #fdbb2d;}
+        .shop-item:hover, .relic-item:hover { transform: translateY(-10px); box-shadow: 0 0 30px rgba(0, 210, 211, 0.3); border-color: #00d2d3;}
         
-        .shop-item h3 { margin-top: 0; color: #1e272e; font-size: 22px; font-weight: 900;}
-        .shop-item .price { font-weight: 900; color: #d63031; font-size: 20px; margin: 20px 0; background: rgba(214, 48, 49, 0.1); padding: 8px; border-radius: 12px;}
+        .shop-item h3 { margin-top: 0; color: #fff; font-size: 22px; font-weight: 900;}
+        .shop-item .price { font-weight: 900; color: #ff9f43; font-size: 20px; margin: 20px 0; background: rgba(255, 159, 67, 0.1); padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 159, 67, 0.3);}
         
         .buy-btn, #pickup-item-btn {
             padding: 15px 25px; border: none; border-radius: 16px; font-family: 'Orbit', sans-serif;
             font-size: 20px; font-weight: 900; cursor: pointer; transition: all 0.2s;
-            background: linear-gradient(135deg, #00b09b, #96c93d); color: #fff; 
-            box-shadow: 0 10px 20px rgba(0, 176, 155, 0.3), inset 0 2px 5px rgba(255,255,255,0.5);
+            background: linear-gradient(135deg, #10ac84, #1dd1a1); color: #222; 
+            box-shadow: 0 10px 20px rgba(16, 172, 132, 0.4);
         }
-        .buy-btn:hover, #pickup-item-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 25px rgba(0, 176, 155, 0.4); }
+        .buy-btn:hover, #pickup-item-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 25px rgba(29, 209, 161, 0.8); color:#fff; }
         .buy-btn:active, #pickup-item-btn:active { transform: scale(0.95); }
 
-        .relic-item { font-size: 20px; line-height: 1.6; }
-        .relic-item.normal { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); border: none;}
-        .relic-item.special { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border: 3px solid #f1c40f; box-shadow: 0 0 20px rgba(241, 196, 15, 0.3); }
-        .relic-item.ticket { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #d63031; border: none;}
+        .relic-item { font-size: 20px; line-height: 1.6; color: #ecf0f1; }
+        .relic-item.normal { background: rgba(45, 52, 54, 0.8); border: 1px solid #636e72;}
+        .relic-item.special { background: rgba(30, 39, 46, 0.9); border: 2px solid #f1c40f; box-shadow: 0 0 20px rgba(241, 196, 15, 0.2); }
+        .relic-item.ticket { background: rgba(45, 0, 0, 0.6); color: #ff7675; border: 1px solid #ff7675;}
 
         /* 모달 및 입력창 */
         #failure-view, #dismantle-success-view, #lobby-view { justify-content: center; align-items: center; text-align: center; }
-        .result-message { font-size: 64px; font-weight: 900; color: #d63031; margin: 20px 0; text-shadow: 3px 3px 0px #fff, 5px 5px 15px rgba(0,0,0,0.2); }
+        .result-message { font-size: 64px; font-weight: 900; color: #ff4757; margin: 20px 0; text-shadow: 0 0 20px rgba(255, 71, 87, 0.6); }
         
         #player-name-input {
-            padding: 20px 25px; font-size: 28px; border-radius: 20px; border: 3px solid transparent;
+            padding: 20px 25px; font-size: 28px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2);
             text-align: center; margin: 40px 0; font-family: 'Orbit', sans-serif; width: 350px;
-            background: rgba(255,255,255,0.9); box-shadow: inset 0 4px 10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05); 
-            transition: all 0.3s; color: #2c3e50; font-weight: bold;
+            background: rgba(0,0,0,0.5); color: #fff; box-shadow: inset 0 4px 10px rgba(0,0,0,0.8); 
+            transition: all 0.3s;
         }
-        #player-name-input:focus { border: 3px solid #8ec5fc; outline: none; transform: scale(1.05); }
+        #player-name-input:focus { border-color: #00d2d3; outline: none; box-shadow: 0 0 20px rgba(0, 210, 211, 0.5), inset 0 4px 10px rgba(0,0,0,0.8); }
 
         /* 하단 푸터 컴포넌트들 */
-        #budget { color: #27ae60; font-weight: 900; font-size: 32px; text-shadow: 1px 1px 0 #fff; }
-        #prevent-count { color: #8e44ad; font-weight: 900; }
+        #budget { color: #1dd1a1; font-weight: 900; font-size: 32px; text-shadow: 0 0 10px rgba(29, 209, 161, 0.5); }
+        #prevent-count { color: #ff9ff3; font-weight: 900; text-shadow: 0 0 10px rgba(255, 159, 243, 0.5); }
         
-        .footer-badge { background: rgba(255,255,255,0.9); padding: 15px 30px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); border: 1px solid #fff; }
+        .footer-badge { background: rgba(0,0,0,0.4); padding: 15px 30px; border-radius: 20px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
         
-        #dismantle-container { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.8); padding: 10px 25px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);}
-        #dismantle-reward-label { font-size: 16px; color: #2c3e50; font-weight: bold; }
-        #dismantle-btn { font-size: 22px; width: auto; height: auto; padding: 12px 25px; border-radius: 16px; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); color: white; border: none;}
+        #dismantle-container { display: flex; align-items: center; gap: 15px; background: rgba(30, 35, 40, 0.8); padding: 10px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);}
+        #dismantle-reward-label { font-size: 16px; color: #c8d6e5; font-weight: bold; }
+        #dismantle-btn { font-size: 22px; width: auto; height: auto; padding: 12px 25px; border-radius: 16px; background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; border: none; box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);}
         
         #retry-btn, #dismantle-ok-btn, #start-game-btn {
             width: 300px; height: 70px; border-radius: 20px; font-size: 28px; font-weight: 900;
-            background: linear-gradient(135deg, #fdfbfb, #ebedee); border: 2px solid #fff; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: 'Orbit', sans-serif; margin-top: 15px; color: #2c3e50;
+            background: linear-gradient(135deg, #2f3542, #1e272e); border: 1px solid #57606f; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Orbit', sans-serif; margin-top: 15px; color: #fff;
         }
-        #retry-btn:hover, #dismantle-ok-btn:hover, #start-game-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: #8ec5fc;}
+        #retry-btn:hover, #dismantle-ok-btn:hover, #start-game-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 0 30px rgba(0, 210, 211, 0.5); border-color: #00d2d3;}
         
         #use-ticket-btn {
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; width: 300px; height: auto;
-            padding: 18px; margin-bottom: 25px; border-radius: 20px; font-size: 22px; border: 2px solid #fff; font-weight: 900;
-            font-family: 'Orbit', sans-serif; cursor: pointer; transition: 0.3s; box-shadow: 0 15px 30px rgba(253, 160, 133, 0.4);
+            background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%); color: #fff; width: 300px; height: auto;
+            padding: 18px; margin-bottom: 25px; border-radius: 20px; font-size: 22px; border: none; font-weight: 900;
+            font-family: 'Orbit', sans-serif; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
         }
-        #use-ticket-btn:hover { transform: translateY(-5px) scale(1.05); }
+        #use-ticket-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 0 30px rgba(255, 107, 107, 0.8); }
 
-        /* 스크롤바 커스텀 */
+        /* 스크롤바 커스텀 (다크모드 맞춤) */
         ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box;}
-        ::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.4); }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box;}
+        ::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 210, 211, 0.6); }
     </style>
 </head>
 <body>
@@ -223,7 +224,7 @@
     <div id="game-container" class="glass-panel">
         <div id="lobby-view" class="view active">
             <h1 class="game-title" style="font-size: 72px; margin-bottom: 10px;">학교 강화하기</h1>
-            <p style="color: #2c3e50; font-size: 22px; margin-top: 0; font-weight: bold; background: rgba(255,255,255,0.5); padding: 5px 20px; border-radius: 20px;">우주 최강의 학교를 건설해 보세요!</p>
+            <p style="color: #a4b0be; font-size: 22px; margin-top: 0; font-weight: bold; background: rgba(0,0,0,0.3); padding: 5px 20px; border-radius: 20px;">어둠을 뚫고 최고의 학교를 건설하라!</p>
             <input type="text" id="player-name-input" placeholder="이름을 입력하세요">
             <button id="start-game-btn">게임 시작 🚀</button>
         </div>
@@ -239,9 +240,9 @@
             </header>
             <main class="main-content">
                 <div class="info-panel">
-                    <p>최고 기록<br><span style="font-size: 28px; color: #f39c12; text-shadow: 1px 1px 0 #fff;" id="max-level-display">0</span>강</p>
+                    <p>최고 기록<br><span style="font-size: 28px; color: #f1c40f; text-shadow: 0 0 10px rgba(241,196,15,0.5);" id="max-level-display">0</span>강</p>
                     <p>강화비용<br><div id="cost">0원</div></p>
-                    <p>매각가격<br><span id="school-value" style="font-size: 22px;">0</span>원</p>
+                    <p>매각가격<br><span id="school-value" style="font-size: 22px; color: #1dd1a1;">0</span>원</p>
                 </div>
                 <div class="school-display-panel">
                     <div id="image-container">
@@ -263,7 +264,7 @@
                     </div>
                 </div>
                 <div class="footer-item footer-badge" style="text-align: right; min-width: 250px;">
-                    <p style="margin: 0; font-size: 16px; color: #7f8c8d; font-weight: bold;">학교보유예산</p>
+                    <p style="margin: 0; font-size: 16px; color: #8395a7; font-weight: bold;">학교보유예산</p>
                     <p style="margin: 0;"><span id="budget">0</span> <span style="font-size: 20px; font-weight: bold;">원</span></p>
                 </div>
             </footer>
@@ -271,7 +272,7 @@
         
         <div id="shop-view" class="view">
             <header class="header">
-                <h1 class="game-title">비밀 상점</h1>
+                <h1 class="game-title">블랙 마켓</h1>
                 <div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button><span>돌아가기</span></div>
             </header>
             <div class="shop-grid">
@@ -292,16 +293,16 @@
         </div>
         
         <div id="failure-view" class="view">
-            <div id="failure-sub-message" style="font-size: 28px; color: #0984e3; font-weight: 900; background: rgba(255,255,255,0.7); padding: 10px 30px; border-radius: 20px;"></div>
-            <h2 class="result-message">학교가 무너졌습니다 💥</h2>
+            <div id="failure-sub-message" style="font-size: 28px; color: #00d2d3; font-weight: 900; background: rgba(0,0,0,0.5); padding: 10px 30px; border-radius: 20px; border: 1px solid #00d2d3;"></div>
+            <h2 class="result-message">학교가 붕괴되었습니다 💥</h2>
             <div id="pickup-item-container" style="display:none; margin: 30px 0;"><button id="pickup-item-btn"></button></div>
             <button id="use-ticket-btn"></button>
-            <button id="retry-btn">처음부터 다시</button>
+            <button id="retry-btn">다시 도전하기</button>
         </div>
 
         <div id="dismantle-success-view" class="view">
-            <h2 class="result-message" style="color: #00b09b; text-shadow: 3px 3px 0 #fff;">철거 완료! ✨</h2>
-            <div id="dismantle-result-message" style="font-size: 32px; font-weight: bold; background: rgba(255,255,255,0.9); padding: 30px; border-radius: 25px; margin-bottom: 40px; color: #2c3e50; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #00b09b;"></div>
+            <h2 class="result-message" style="color: #1dd1a1; text-shadow: 0 0 20px rgba(29, 209, 161, 0.6);">철거 완료! ✨</h2>
+            <div id="dismantle-result-message" style="font-size: 32px; font-weight: bold; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 25px; margin-bottom: 40px; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid #1dd1a1;"></div>
             <button id="dismantle-ok-btn">확인</button>
         </div>
     </div>
@@ -370,11 +371,17 @@ function updateDisplay() {
     schoolLevelNameEl.textContent = `+${currentLevel} ${levelNames[currentLevel]}`;
     schoolValueEl.textContent = schoolValues[currentLevel].toLocaleString();
     
-    // JS 경로 100% 유지 (images 폴더 내 파일 연동)
-    document.getElementById('school-image').src = `images/school_${currentLevel}.png`;
+    // (FIXED) 이미지 파일이 HTML과 같은 경로에 있고, .jpg 확장자임을 반영
+    const imgEl = document.getElementById('school-image');
+    imgEl.src = `school_${currentLevel}.jpg`;
+    
+    // 이미지가 없을 경우 빈 화면 대신 기본 처리 (오류 방지용)
+    imgEl.onerror = function() {
+        this.src = 'https://via.placeholder.com/300x300/1e272e/ffffff?text=Image+Not+Found';
+    };
 
     if (currentLevel >= 20) {
-        costEl.innerHTML = "<span style='color:#f39c12'>최종 단계 달성!</span>";
+        costEl.innerHTML = "<span style='color:#f1c40f'>최종 진화 완료!</span>";
         schoolProbabilityEl.textContent = "더 이상 강화할 수 없습니다.";
         enhanceBtn.style.display = 'none';
         dismantleContainer.style.display = 'none';
@@ -385,7 +392,7 @@ function updateDisplay() {
     let costText = "";
     if (currentLevel >= 15 && currentLevel <= 18) {
         const recipe = craftingRecipes[currentLevel];
-        costText = Object.entries(recipe).map(([name, quant]) => `<span style="color:${inventory.relics[name]>=quant?'#27ae60':'#e74c3c'};">${name} ${inventory.relics[name]}/${quant}개</span>`).join('<br>');
+        costText = Object.entries(recipe).map(([name, quant]) => `<span style="color:${inventory.relics[name]>=quant?'#1dd1a1':'#ff4757'};">${name} ${inventory.relics[name]}/${quant}개</span>`).join('<br>');
     } else {
         costText = enhancementCosts[currentLevel].toLocaleString() + '원';
     }
@@ -399,7 +406,7 @@ function updateInventoryDisplay() {
     grid.innerHTML = ''; 
     const preventItemDiv = document.createElement('div');
     preventItemDiv.className = 'relic-item ticket';
-    preventItemDiv.innerHTML = `<strong style="font-size:22px; color:#c0392b;">🛡️ 붕괴 방지권</strong><br><span style="font-size:28px; font-weight:900;">${inventory.preventDestruction}개</span>`;
+    preventItemDiv.innerHTML = `<strong style="font-size:22px;">🛡️ 붕괴 방지권</strong><br><span style="font-size:28px; font-weight:900;">${inventory.preventDestruction}개</span>`;
     grid.appendChild(preventItemDiv);
     
     allRelicNames.forEach(name => {
@@ -464,7 +471,7 @@ function renderLeaderboard() {
     leaderboardList.innerHTML = '';
     scores.slice(0, 10).forEach((score, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `<span class="rank">${index + 1}위</span><span class="name">${score.name}</span><span class="score"><span style="color:#1e272e; font-weight:900; font-size:16px;">${score.level}강</span><br>${score.budget.toLocaleString()}원</span>`;
+        li.innerHTML = `<span class="rank">${index + 1}위</span><span class="name">${score.name}</span><span class="score"><span style="color:#f1c40f; font-weight:900; font-size:16px;">${score.level}강</span><br>${score.budget.toLocaleString()}원</span>`;
         leaderboardList.appendChild(li);
     });
 }
@@ -476,7 +483,7 @@ function endGame() {
     showView('lobby-view');
 }
 
-// 이벤트 리스너들 (기존 로직과 완전히 동일)
+// 이벤트 리스너들
 startGameBtn.addEventListener('click', () => {
     const name = playerNameInput.value.trim();
     if (!name) { alert('이름을 입력해주세요!'); return; }
@@ -528,7 +535,7 @@ enhanceBtn.addEventListener('click', function() {
     } else { 
         failedLevel = currentLevel;
         lastDroppedRelic = {name: allRelicNames[Math.floor(Math.random()*allRelicNames.length)], quantity: Math.floor(Math.random()*3)+1};
-        subMessageEl.textContent = `이런! 부서진 잔해 속에서 무언가 발견했다...`;
+        subMessageEl.textContent = `이런! 부서진 잔해 속에서 무언가 빛난다...`;
         pickupItemContainer.style.display = 'block';
         pickupItemBtn.textContent = `🎁 [${lastDroppedRelic.name}] ${lastDroppedRelic.quantity}개 줍기`;
         
@@ -568,7 +575,7 @@ pickupItemBtn.addEventListener('click', function() {
         inventory.relics[lastDroppedRelic.name] += lastDroppedRelic.quantity;
         lastDroppedRelic = {};
         pickupItemContainer.style.display = 'none';
-        subMessageEl.textContent = "가방에 유물을 챙겼다!";
+        subMessageEl.textContent = "가방에 유물을 안전하게 챙겼다!";
     }
 });
 
@@ -607,7 +614,7 @@ dismantleBtn.addEventListener('click', function() {
         inventory.relics['신비로운 기계부품']++;
         dismantledItem = '신비로운 기계부품';
     }
-    dismantleResultMessageEl.innerHTML = dismantledItem ? `<span style="color:#00b09b;">[${dismantledItem}]</span> 을(를) 획득했다! 🎉` : "아무것도 얻지 못했다... 😢";
+    dismantleResultMessageEl.innerHTML = dismantledItem ? `<span style="color:#00d2d3;">[${dismantledItem}]</span> 을(를) 획득했다! 🎉` : "아무것도 얻지 못했다... 😢";
     showView('dismantle-success-view');
 });
 
