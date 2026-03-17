@@ -3,203 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>학교 건물 강화하기 (UI 전면 개편)</title>
+    <title>학교 건물 강화하기 (Premium Edition)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
         
-        /* 전체 배경 및 폰트 설정 */
+        /* 1. 다이나믹 애니메이션 배경 (다채롭고 고급스러운 느낌) */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         body {
             font-family: 'Orbit', sans-serif;
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            color: #2c3e50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-weight: 600;
-            overflow: hidden;
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #9b59b6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #2c3e50; font-weight: 600; overflow: hidden;
         }
         
-        /* 글래스모피즘 (반투명 유리 효과) 컨테이너 공통 스타일 */
+        /* 2. 프리미엄 글래스모피즘 패널 */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255,255,255,0.5);
         }
 
-        #app-container { display: flex; gap: 24px; width: 95%; max-width: 1300px; height: 90vh; }
+        #app-container { display: flex; gap: 25px; width: 95%; max-width: 1300px; height: 92vh; }
         
         #game-container {
-            width: 100%;
-            max-width: 900px;
-            padding: 30px;
-            box-sizing: border-box;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            flex-grow: 1; padding: 40px; box-sizing: border-box; position: relative;
+            display: flex; flex-direction: column; overflow: hidden;
         }
         
         #leaderboard-container {
-            width: 320px;
-            flex-shrink: 0;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
+            width: 340px; flex-shrink: 0; padding: 30px; display: flex; flex-direction: column;
         }
         
+        /* 명예의 전당 타이틀 및 리스트 */
         #leaderboard-container h2 {
-            text-align: center; margin-top: 0; color: #2c3e50; font-size: 24px;
-            padding-bottom: 15px; border-bottom: 2px dashed rgba(0,0,0,0.1);
+            text-align: center; margin-top: 0; color: #1e272e; font-size: 28px;
+            padding-bottom: 20px; border-bottom: 2px solid rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         
-        #leaderboard-list { list-style-type: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 5px; }
-        #leaderboard-list::-webkit-scrollbar { width: 6px; }
-        #leaderboard-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        
+        #leaderboard-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 10px; }
         #leaderboard-list li {
-            display: flex; justify-content: space-between; padding: 15px;
-            border-radius: 12px; margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            font-size: 15px; transition: transform 0.2s;
+            display: flex; justify-content: space-between; padding: 18px 15px;
+            border-radius: 16px; margin-bottom: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255,255,255,0.8);
         }
-        #leaderboard-list li:hover { transform: translateY(-2px); }
-        #leaderboard-list li .rank { font-weight: bold; color: #3b82f6; width: 45px; }
-        #leaderboard-list li .name { font-weight: bold; flex-grow: 1; color: #34495e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #leaderboard-list li .score { text-align: right; color: #7f8c8d; font-size: 13px; display: flex; flex-direction: column; }
+        #leaderboard-list li:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.1); border-color: #8ec5fc; }
+        #leaderboard-list li .rank { font-weight: 900; color: #e74c3c; width: 50px; font-size: 16px; }
+        #leaderboard-list li .name { font-weight: bold; flex-grow: 1; color: #2c3e50; font-size: 16px; }
+        #leaderboard-list li .score { text-align: right; color: #7f8c8d; font-size: 13px; line-height: 1.4; }
 
-        /* 제목 스타일 */
+        /* 타이틀 효과 (네온 & 그라데이션) */
         .game-title {
-            font-size: 48px; text-align: center; margin: 0; font-weight: bold;
-            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            font-size: 52px; text-align: center; margin: 0; font-weight: 900;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1); letter-spacing: -1px;
         }
         
-        /* 뉴모피즘(입체적인) 버튼 스타일 */
+        /* 공통 원형 버튼 (입체감 강화) */
         .circular-btn {
-            width: 65px; height: 65px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             background: linear-gradient(145deg, #ffffff, #e6e6e6);
-            box-shadow: 5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px #ffffff;
-            border: none; cursor: pointer; transition: all 0.2s ease;
-            font-size: 28px; color: #333; display: flex; justify-content: center; align-items: center;
-            user-select: none;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9);
+            border: none; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 32px; display: flex; justify-content: center; align-items: center; user-select: none;
         }
-        .circular-btn:hover { transform: scale(1.08); box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px #ffffff; }
-        .circular-btn:active { transform: scale(0.95); box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1), inset -5px -5px 10px #ffffff; }
+        .circular-btn:hover { transform: scale(1.15) translateY(-5px); box-shadow: 8px 12px 20px rgba(0,0,0,0.15), -6px -6px 12px rgba(255,255,255,0.9); }
+        .circular-btn:active { transform: scale(0.9); box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1), inset -5px -5px 10px rgba(255,255,255,0.9); }
 
-        /* 뷰 전환 애니메이션 */
-        .view { display: none; flex-direction: column; height: 100%; animation: fadeIn 0.4s ease-out; }
+        .view { display: none; flex-direction: column; height: 100%; animation: fadeZoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .view.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeZoomIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* 헤더 & 푸터 */
-        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.5); }
-        .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.5); font-size: 18px; }
-        .header-item-group { display: flex; gap: 15px; }
-        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 14px; font-weight: bold; color: #555; gap: 5px; }
+        /* 헤더 / 푸터 */
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 2px dashed rgba(0,0,0,0.1); }
+        .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; border-top: 2px dashed rgba(0,0,0,0.1); }
+        .header-item-group { display: flex; gap: 20px; }
+        .header-item, .footer-item { display: flex; flex-direction: column; align-items: center; font-size: 15px; font-weight: bold; color: #34495e; gap: 8px; }
         
-        /* 메인 게임 화면 레이아웃 */
-        .main-content { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .main-content { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; position: relative; }
         
+        /* 정보 패널 */
         .info-panel {
-            background: rgba(255,255,255,0.7); padding: 20px; border-radius: 16px; width: 220px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); font-size: 18px; line-height: 1.6;
+            background: rgba(255,255,255,0.85); padding: 25px; border-radius: 20px; width: 230px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05), inset 0 2px 0 rgba(255,255,255,1);
+            border: 1px solid rgba(255,255,255,0.9); font-size: 18px; line-height: 1.7; z-index: 10;
         }
-        .info-panel p { margin: 10px 0; font-size: 16px; color: #7f8c8d; }
-        .info-panel span, .info-panel div { font-weight: bold; color: #2c3e50; display: block; }
-        #cost { min-height: 50px; color: #e74c3c; font-size: 20px; margin-top: 5px; }
+        .info-panel p { margin: 12px 0; font-size: 15px; color: #7f8c8d; }
+        .info-panel span, .info-panel div { font-weight: 900; color: #2c3e50; display: block; }
+        #cost { min-height: 55px; color: #e74c3c; font-size: 22px; margin-top: 5px; text-shadow: 1px 1px 0 rgba(255,255,255,0.8); }
 
-        /* 학교 이미지 디스플레이 영역 */
-        .school-display-panel { text-align: center; display: flex; flex-direction: column; align-items: center; flex-grow: 1; }
+        /* 3. 학교 이미지 디스플레이 영역 (애니메이션 극대화) */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 20px rgba(255,255,255,0.4), inset 0 0 20px rgba(255,255,255,0.4); } 50% { box-shadow: 0 0 50px rgba(255,215,0,0.6), inset 0 0 40px rgba(255,215,0,0.4); } 100% { box-shadow: 0 0 20px rgba(255,255,255,0.4), inset 0 0 20px rgba(255,255,255,0.4); } }
+        
+        .school-display-panel { text-align: center; display: flex; flex-direction: column; align-items: center; flex-grow: 1; z-index: 5; }
         #image-container {
-            width: 320px; height: 320px; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0.9), rgba(240,240,240,0.4));
-            border-radius: 50%; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin-bottom: 25px; border: 5px solid white;
-            transition: transform 0.3s;
+            width: 360px; height: 360px; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.2) 80%);
+            border-radius: 35px; border: 3px solid rgba(255,255,255,0.8);
+            margin-bottom: 30px; 
+            animation: float 4s ease-in-out infinite, pulseGlow 3s infinite;
+            position: relative;
         }
-        #image-container:hover { transform: translateY(-5px); }
-        .school-display-panel img { max-width: 80%; max-height: 80%; object-fit: contain; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
+        /* 이미지 스케일 및 그림자 효과 */
+        .school-display-panel img { 
+            max-width: 85%; max-height: 85%; object-fit: contain; 
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        #image-container:hover img { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 30px 35px rgba(0,0,0,0.4)); }
         
-        .school-level-name { font-size: 38px; margin-top: 0; font-weight: 800; color: #2c3e50; text-shadow: 1px 1px 0px #fff; }
-        .school-probability { font-size: 22px; color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 5px 15px; border-radius: 20px; margin-top: 10px; }
+        .school-level-name { font-size: 42px; margin-top: 0; font-weight: 900; color: #1e272e; text-shadow: 2px 2px 0px #fff, 4px 4px 10px rgba(0,0,0,0.1); }
+        .school-probability { font-size: 24px; color: #0984e3; background: linear-gradient(135deg, #e0f2fe, #bae6fd); padding: 8px 25px; border-radius: 30px; margin-top: 15px; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.2); font-weight: bold; border: 2px solid #fff;}
         
-        /* 강화 버튼 사이즈 업 */
+        /* 강화 버튼 (황금 망치 느낌) */
         .action-panel .enhance-btn {
-            width: 180px; height: 180px; font-size: 90px;
-            background: linear-gradient(145deg, #a8edea 0%, #fed6e3 100%);
-            box-shadow: 0 15px 25px rgba(254, 214, 227, 0.4); border: 4px solid white;
+            width: 200px; height: 200px; font-size: 100px;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            box-shadow: 0 20px 40px rgba(253, 160, 133, 0.5), inset 0 -10px 20px rgba(0,0,0,0.1), inset 0 10px 20px rgba(255,255,255,0.8);
+            border: 6px solid white; z-index: 10;
         }
 
-        /* 상점 및 인벤토리 그리드 */
+        /* 4. 그리드 아이템 (상점 & 인벤토리) */
         .shop-grid, .inventory-grid {
-            flex-grow: 1; overflow-y: auto; padding: 20px 5px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-content: start;
+            flex-grow: 1; overflow-y: auto; padding: 20px 10px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; align-content: start;
         }
         
         .shop-item, .relic-item {
-            background: rgba(255,255,255,0.9); padding: 25px 20px; border-radius: 16px;
-            text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.2s;
+            background: rgba(255,255,255,0.85); padding: 30px 25px; border-radius: 24px;
+            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8);
             display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden;
         }
-        .shop-item:hover, .relic-item:hover { transform: translateY(-5px); }
-        .shop-item h3 { margin-top: 0; color: #1e3c72; font-size: 20px; }
-        .shop-item .price { font-weight: bold; color: #e74c3c; font-size: 18px; margin: 15px 0; background: rgba(231, 76, 60, 0.1); padding: 5px; border-radius: 8px;}
+        .shop-item::before, .relic-item::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: 0.5s;
+        }
+        .shop-item:hover::before, .relic-item:hover::before { left: 200%; }
+        .shop-item:hover, .relic-item:hover { transform: translateY(-10px); box-shadow: 0 25px 45px rgba(0,0,0,0.1); border-color: #fdbb2d;}
+        
+        .shop-item h3 { margin-top: 0; color: #1e272e; font-size: 22px; font-weight: 900;}
+        .shop-item .price { font-weight: 900; color: #d63031; font-size: 20px; margin: 20px 0; background: rgba(214, 48, 49, 0.1); padding: 8px; border-radius: 12px;}
         
         .buy-btn, #pickup-item-btn {
-            padding: 12px 24px; border: none; border-radius: 12px; font-family: 'Orbit', sans-serif;
-            font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.2s;
-            background: #4caf50; color: #fff; box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            padding: 15px 25px; border: none; border-radius: 16px; font-family: 'Orbit', sans-serif;
+            font-size: 20px; font-weight: 900; cursor: pointer; transition: all 0.2s;
+            background: linear-gradient(135deg, #00b09b, #96c93d); color: #fff; 
+            box-shadow: 0 10px 20px rgba(0, 176, 155, 0.3), inset 0 2px 5px rgba(255,255,255,0.5);
         }
-        .buy-btn:hover, #pickup-item-btn:hover { background: #43a047; transform: translateY(-2px); }
+        .buy-btn:hover, #pickup-item-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 25px rgba(0, 176, 155, 0.4); }
         .buy-btn:active, #pickup-item-btn:active { transform: scale(0.95); }
 
-        .relic-item { font-size: 18px; line-height: 1.5; }
-        .relic-item.normal { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
-        .relic-item.special { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border: 2px solid #f1c40f; }
-        .relic-item.ticket { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: white;}
+        .relic-item { font-size: 20px; line-height: 1.6; }
+        .relic-item.normal { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); border: none;}
+        .relic-item.special { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border: 3px solid #f1c40f; box-shadow: 0 0 20px rgba(241, 196, 15, 0.3); }
+        .relic-item.ticket { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #d63031; border: none;}
 
-        /* 결과 화면 모달 느낌 */
+        /* 모달 및 입력창 */
         #failure-view, #dismantle-success-view, #lobby-view { justify-content: center; align-items: center; text-align: center; }
-        .result-message { font-size: 56px; font-weight: 900; color: #e74c3c; margin: 20px 0; text-shadow: 2px 2px 0px #fff; }
+        .result-message { font-size: 64px; font-weight: 900; color: #d63031; margin: 20px 0; text-shadow: 3px 3px 0px #fff, 5px 5px 15px rgba(0,0,0,0.2); }
         
         #player-name-input {
-            padding: 15px 20px; font-size: 24px; border-radius: 15px; border: none;
-            text-align: center; margin: 30px 0; font-family: 'Orbit', sans-serif; width: 300px;
-            background: rgba(255,255,255,0.9); box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); outline: none;
+            padding: 20px 25px; font-size: 28px; border-radius: 20px; border: 3px solid transparent;
+            text-align: center; margin: 40px 0; font-family: 'Orbit', sans-serif; width: 350px;
+            background: rgba(255,255,255,0.9); box-shadow: inset 0 4px 10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05); 
+            transition: all 0.3s; color: #2c3e50; font-weight: bold;
         }
-        #player-name-input:focus { border: 2px solid #8ec5fc; }
+        #player-name-input:focus { border: 3px solid #8ec5fc; outline: none; transform: scale(1.05); }
 
         /* 하단 푸터 컴포넌트들 */
-        #budget { color: #27ae60; font-weight: 900; font-size: 28px; }
-        #prevent-count { color: #8e44ad; font-weight: bold; }
+        #budget { color: #27ae60; font-weight: 900; font-size: 32px; text-shadow: 1px 1px 0 #fff; }
+        #prevent-count { color: #8e44ad; font-weight: 900; }
         
-        #dismantle-container { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.6); padding: 10px 20px; border-radius: 15px;}
-        #dismantle-reward-label { font-size: 15px; color: #555; font-weight: bold; }
-        #dismantle-btn { font-size: 20px; width: auto; height: auto; padding: 10px 20px; border-radius: 12px; }
+        .footer-badge { background: rgba(255,255,255,0.9); padding: 15px 30px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); border: 1px solid #fff; }
+        
+        #dismantle-container { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.8); padding: 10px 25px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);}
+        #dismantle-reward-label { font-size: 16px; color: #2c3e50; font-weight: bold; }
+        #dismantle-btn { font-size: 22px; width: auto; height: auto; padding: 12px 25px; border-radius: 16px; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); color: white; border: none;}
         
         #retry-btn, #dismantle-ok-btn, #start-game-btn {
-            width: 250px; height: 60px; border-radius: 15px; font-size: 24px; font-weight: bold;
-            background: #fff; border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s;
-            font-family: 'Orbit', sans-serif; margin-top: 10px;
+            width: 300px; height: 70px; border-radius: 20px; font-size: 28px; font-weight: 900;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee); border: 2px solid #fff; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Orbit', sans-serif; margin-top: 15px; color: #2c3e50;
         }
-        #retry-btn:hover, #dismantle-ok-btn:hover, #start-game-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+        #retry-btn:hover, #dismantle-ok-btn:hover, #start-game-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: #8ec5fc;}
         
         #use-ticket-btn {
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; width: 250px; height: auto;
-            padding: 15px; margin-bottom: 20px; border-radius: 15px; font-size: 20px; border: none; font-weight: bold;
-            font-family: 'Orbit', sans-serif; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(253, 160, 133, 0.3);
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; width: 300px; height: auto;
+            padding: 18px; margin-bottom: 25px; border-radius: 20px; font-size: 22px; border: 2px solid #fff; font-weight: 900;
+            font-family: 'Orbit', sans-serif; cursor: pointer; transition: 0.3s; box-shadow: 0 15px 30px rgba(253, 160, 133, 0.4);
         }
-        #use-ticket-btn:hover { transform: translateY(-2px); }
+        #use-ticket-btn:hover { transform: translateY(-5px) scale(1.05); }
 
-        /* 스크롤바 숨기기 공통 */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        /* 스크롤바 커스텀 */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box;}
+        ::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.4); }
     </style>
 </head>
 <body>
@@ -207,8 +222,8 @@
 <div id="app-container">
     <div id="game-container" class="glass-panel">
         <div id="lobby-view" class="view active">
-            <h1 class="game-title" style="font-size: 64px;">학교 강화하기</h1>
-            <p style="color: #555; font-size: 18px; margin-top: 0;">최고의 학교를 건설해 보세요!</p>
+            <h1 class="game-title" style="font-size: 72px; margin-bottom: 10px;">학교 강화하기</h1>
+            <p style="color: #2c3e50; font-size: 22px; margin-top: 0; font-weight: bold; background: rgba(255,255,255,0.5); padding: 5px 20px; border-radius: 20px;">우주 최강의 학교를 건설해 보세요!</p>
             <input type="text" id="player-name-input" placeholder="이름을 입력하세요">
             <button id="start-game-btn">게임 시작 🚀</button>
         </div>
@@ -216,17 +231,17 @@
         <div id="main-game-view" class="view">
             <header class="header">
                 <div class="header-item-group">
-                    <div class="header-item"><button id="go-to-inventory-btn" class="circular-btn">📦</button><span>아이템창</span></div>
-                    <div class="header-item"><button id="end-game-btn" class="circular-btn">🏁</button><span>종료 & 기록</span></div>
+                    <div class="header-item"><button id="go-to-inventory-btn" class="circular-btn">🎒</button><span>인벤토리</span></div>
+                    <div class="header-item"><button id="end-game-btn" class="circular-btn">🏆</button><span>기록저장</span></div>
                 </div>
-                <h1 class="game-title" style="font-size: 40px; flex-grow: 1;">학교 강화하기</h1>
+                <h1 class="game-title" style="font-size: 46px; flex-grow: 1;">학교 강화하기</h1>
                 <div class="header-item"><button id="top-right-action-btn" class="circular-btn">🏪</button><span id="top-right-action-label">상점 가기</span></div>
             </header>
             <main class="main-content">
                 <div class="info-panel">
-                    <p>최고 기록<br><span style="font-size: 24px; color: #f39c12;" id="max-level-display">0</span>강</p>
+                    <p>최고 기록<br><span style="font-size: 28px; color: #f39c12; text-shadow: 1px 1px 0 #fff;" id="max-level-display">0</span>강</p>
                     <p>강화비용<br><div id="cost">0원</div></p>
-                    <p>매각가격<br><span id="school-value">0</span>원</p>
+                    <p>매각가격<br><span id="school-value" style="font-size: 22px;">0</span>원</p>
                 </div>
                 <div class="school-display-panel">
                     <div id="image-container">
@@ -239,24 +254,24 @@
             </main>
             <footer class="footer">
                 <div class="footer-item" style="flex-direction: row; align-items: center; gap: 20px;">
-                    <div style="background: rgba(255,255,255,0.8); padding: 15px 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                        붕괴 방지권 : <span id="prevent-count" style="font-size: 22px;">0</span>개
+                    <div class="footer-badge">
+                        붕괴 방지권 : <span id="prevent-count" style="font-size: 26px;">0</span>개
                     </div>
                     <div id="dismantle-container" style="display: none;">
-                        <button id="dismantle-btn" class="circular-btn" style="background: #ff6b6b; color: white;"></button>
+                        <button id="dismantle-btn" class="circular-btn"></button>
                         <div id="dismantle-reward-label"></div>
                     </div>
                 </div>
-                <div class="footer-item" style="text-align: right; background: rgba(255,255,255,0.8); padding: 10px 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    <p style="margin: 0; font-size: 14px; color: #7f8c8d;">학교예산</p>
-                    <p style="margin: 0;"><span id="budget">0</span> <span style="font-size: 18px;">원</span></p>
+                <div class="footer-item footer-badge" style="text-align: right; min-width: 250px;">
+                    <p style="margin: 0; font-size: 16px; color: #7f8c8d; font-weight: bold;">학교보유예산</p>
+                    <p style="margin: 0;"><span id="budget">0</span> <span style="font-size: 20px; font-weight: bold;">원</span></p>
                 </div>
             </footer>
         </div>
         
         <div id="shop-view" class="view">
             <header class="header">
-                <h1 class="game-title">상점</h1>
+                <h1 class="game-title">비밀 상점</h1>
                 <div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button><span>돌아가기</span></div>
             </header>
             <div class="shop-grid">
@@ -270,23 +285,23 @@
         
         <div id="inventory-view" class="view">
              <header class="header">
-                 <h1 class="game-title">내 아이템</h1>
+                 <h1 class="game-title">나의 유물함</h1>
                  <div class="header-item"><button class="back-to-main-btn circular-btn">↩️</button><span>돌아가기</span></div>
              </header>
             <div class="inventory-grid"></div>
         </div>
         
         <div id="failure-view" class="view">
-            <div id="failure-sub-message" style="font-size: 24px; color: #1e88e5; font-weight: bold;"></div>
-            <h2 class="result-message">강화에 실패하여<br>학교가 붕괴되었습니다 💥</h2>
-            <div id="pickup-item-container" style="display:none; margin: 25px 0;"><button id="pickup-item-btn"></button></div>
+            <div id="failure-sub-message" style="font-size: 28px; color: #0984e3; font-weight: 900; background: rgba(255,255,255,0.7); padding: 10px 30px; border-radius: 20px;"></div>
+            <h2 class="result-message">학교가 무너졌습니다 💥</h2>
+            <div id="pickup-item-container" style="display:none; margin: 30px 0;"><button id="pickup-item-btn"></button></div>
             <button id="use-ticket-btn"></button>
             <button id="retry-btn">처음부터 다시</button>
         </div>
 
         <div id="dismantle-success-view" class="view">
-            <h2 class="result-message" style="color: #27ae60; text-shadow: none;">해체 성공! ✨</h2>
-            <div id="dismantle-result-message" style="font-size: 28px; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 15px; margin-bottom: 30px; color: #2c3e50;"></div>
+            <h2 class="result-message" style="color: #00b09b; text-shadow: 3px 3px 0 #fff;">철거 완료! ✨</h2>
+            <div id="dismantle-result-message" style="font-size: 32px; font-weight: bold; background: rgba(255,255,255,0.9); padding: 30px; border-radius: 25px; margin-bottom: 40px; color: #2c3e50; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #00b09b;"></div>
             <button id="dismantle-ok-btn">확인</button>
         </div>
     </div>
@@ -354,6 +369,8 @@ function updateDisplay() {
     preventCountEl.textContent = inventory.preventDestruction;
     schoolLevelNameEl.textContent = `+${currentLevel} ${levelNames[currentLevel]}`;
     schoolValueEl.textContent = schoolValues[currentLevel].toLocaleString();
+    
+    // JS 경로 100% 유지 (images 폴더 내 파일 연동)
     document.getElementById('school-image').src = `images/school_${currentLevel}.png`;
 
     if (currentLevel >= 20) {
@@ -382,7 +399,7 @@ function updateInventoryDisplay() {
     grid.innerHTML = ''; 
     const preventItemDiv = document.createElement('div');
     preventItemDiv.className = 'relic-item ticket';
-    preventItemDiv.innerHTML = `<strong style="font-size:20px;">🛡️ 붕괴 방지권</strong><br><span style="font-size:24px; font-weight:bold;">${inventory.preventDestruction}개</span>`;
+    preventItemDiv.innerHTML = `<strong style="font-size:22px; color:#c0392b;">🛡️ 붕괴 방지권</strong><br><span style="font-size:28px; font-weight:900;">${inventory.preventDestruction}개</span>`;
     grid.appendChild(preventItemDiv);
     
     allRelicNames.forEach(name => {
@@ -390,7 +407,7 @@ function updateInventoryDisplay() {
             const relicDiv = document.createElement('div');
             const itemClass = specialRelics.includes(name) ? 'special' : 'normal';
             relicDiv.className = `relic-item ${itemClass}`;
-            relicDiv.innerHTML = `<strong>${name}</strong><br><span style="font-size:20px; font-weight:bold;">${inventory.relics[name]}개</span>`;
+            relicDiv.innerHTML = `<strong>${name}</strong><br><span style="font-size:26px; font-weight:900;">${inventory.relics[name]}개</span>`;
             grid.appendChild(relicDiv);
         }
     });
@@ -422,7 +439,7 @@ function updateDismantleLabel() {
         else if (currentLevel === 16) probability = 50;
         else if (currentLevel === 17) probability = 100;
         else if (currentLevel === 18) probability = 100;
-        rewardText = `(다음 강화 재료 ${probability}% 확률로 획득 가능)`;
+        rewardText = `(강화재료 ${probability}% 획득)`;
     } else {
         dismantleContainer.style.display = 'none';
     }
@@ -447,7 +464,7 @@ function renderLeaderboard() {
     leaderboardList.innerHTML = '';
     scores.slice(0, 10).forEach((score, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `<span class="rank">${index + 1}위</span><span class="name">${score.name}</span><span class="score"><span style="color:#2c3e50; font-weight:bold; font-size:15px;">${score.level}강</span> ${score.budget.toLocaleString()}원</span>`;
+        li.innerHTML = `<span class="rank">${index + 1}위</span><span class="name">${score.name}</span><span class="score"><span style="color:#1e272e; font-weight:900; font-size:16px;">${score.level}강</span><br>${score.budget.toLocaleString()}원</span>`;
         leaderboardList.appendChild(li);
     });
 }
@@ -511,13 +528,13 @@ enhanceBtn.addEventListener('click', function() {
     } else { 
         failedLevel = currentLevel;
         lastDroppedRelic = {name: allRelicNames[Math.floor(Math.random()*allRelicNames.length)], quantity: Math.floor(Math.random()*3)+1};
-        subMessageEl.textContent = `이런! 하지만 무언가 발견했다...`;
+        subMessageEl.textContent = `이런! 부서진 잔해 속에서 무언가 발견했다...`;
         pickupItemContainer.style.display = 'block';
         pickupItemBtn.textContent = `🎁 [${lastDroppedRelic.name}] ${lastDroppedRelic.quantity}개 줍기`;
         
         let requiredTickets = (failedLevel >= 19) ? 50 : (failedLevel >= 10 ? failedLevel - 9 : 0);
         useTicketBtn.style.display = (requiredTickets > 0 && inventory.preventDestruction >= requiredTickets) ? 'block' : 'none';
-        if (requiredTickets > 0) useTicketBtn.innerHTML = `🛡️ 방지권 ${requiredTickets}개 사용<br>(학교 지키기)`;
+        if (requiredTickets > 0) useTicketBtn.innerHTML = `🛡️ 방지권 ${requiredTickets}개 사용<br>(학교 복구하기)`;
         
         showView('failure-view');
         return; 
@@ -551,7 +568,7 @@ pickupItemBtn.addEventListener('click', function() {
         inventory.relics[lastDroppedRelic.name] += lastDroppedRelic.quantity;
         lastDroppedRelic = {};
         pickupItemContainer.style.display = 'none';
-        subMessageEl.textContent = "가방에 아이템을 챙겼다!";
+        subMessageEl.textContent = "가방에 유물을 챙겼다!";
     }
 });
 
@@ -590,7 +607,7 @@ dismantleBtn.addEventListener('click', function() {
         inventory.relics['신비로운 기계부품']++;
         dismantledItem = '신비로운 기계부품';
     }
-    dismantleResultMessageEl.innerHTML = dismantledItem ? `<strong>[${dismantledItem}]</strong> 을(를) 획득했다! 🎉` : "아무것도 얻지 못했다... 😢";
+    dismantleResultMessageEl.innerHTML = dismantledItem ? `<span style="color:#00b09b;">[${dismantledItem}]</span> 을(를) 획득했다! 🎉` : "아무것도 얻지 못했다... 😢";
     showView('dismantle-success-view');
 });
 
